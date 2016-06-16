@@ -13,15 +13,6 @@ public class Amazing {
     public static Random random = new Random(0);
     static StringBuffer result = new StringBuffer();
 
-    public static void main(String[] args) {
-        doit(Integer.parseInt(args[0]),Integer.parseInt(args[1]));
-        System.out.println(result);
-    }
-
-    private static void clear() {
-        result.setLength(0);
-    }
-
     private static void println() {
         result.append("\n");
     }
@@ -38,39 +29,29 @@ public class Amazing {
         target = lineno;
     }
 
+    private static final int FERME_EN_BAS_A_DROITE =0;
+
     public static void doit(int horizontal, int vertical) {
-        clear();
-        print("Amazing - Copyright by Creative Computing, Morristown, NJ");
-        println();
+        initMaze();
 
-        int h = horizontal;
-        int v = vertical;
-        if (h == 1 || v == 1) return;
+        int x = rnd(horizontal);
 
-        int[][] wArray = new int[h + 1][v + 1];
-        for (int i = 0; i <= h; i++) {
-            wArray[i] = new int[v + 1];
+        if (horizontal == 1 || vertical == 1) return;
+
+        displayFirstLine(horizontal, x);
+
+        // Way array ?
+        int[][] wArray = new int[horizontal + 1][vertical + 1];
+        int[][] matrice = new int[horizontal + 1][vertical + 1];
+
+        for (int i = 0; i <= horizontal; i++) {
+            wArray[i] = new int[vertical + 1];
+            matrice[i] = new int[vertical + 1];
         }
 
-        int[][] vArray = new int[h + 1][v + 1];
-        for (int i = 0; i <= h; i++) {
-            vArray[i] = new int[v + 1];
-        }
 
         int q = 0;
         int z = 0;
-        int x = rnd(h);
-
-        // 130:170
-        for (int i = 1; i <= h; i++) {
-            if (i == x)
-                print(":  ");
-            else
-                print(":--");
-        }
-        // 180
-        print(":");
-        println();
 
         // 190
         int c = 1;
@@ -85,13 +66,13 @@ public class Amazing {
         while (target != -1) {
             switch (target) {
                 case 210:
-                    if (r != h)
+                    if (r != horizontal)
                         GOTO(250);
                     else
                         GOTO(220);
                     continue;
                 case 220:
-                    if (s != v)
+                    if (s != vertical)
                         GOTO(240);
                     else
                         GOTO(230);
@@ -141,7 +122,7 @@ public class Amazing {
                         GOTO(310);
                     continue;
                 case 310:
-                    if (r == h)
+                    if (r == horizontal)
                         GOTO(350);
                     else
                         GOTO(320);
@@ -167,7 +148,7 @@ public class Amazing {
                         GOTO(350);
                     continue;
                 case 350:
-                    if (s != v)
+                    if (s != vertical)
                         GOTO(380);
                     else
                         GOTO(360);
@@ -215,7 +196,7 @@ public class Amazing {
                         GOTO(430);
                     continue;
                 case 430:
-                    if (r == h)
+                    if (r == horizontal)
                         GOTO(530);
                     else
                         GOTO(440);
@@ -227,7 +208,7 @@ public class Amazing {
                         GOTO(450);
                     continue;
                 case 450:
-                    if (s != v)
+                    if (s != vertical)
                         GOTO(480);
                     else
                         GOTO(460);
@@ -275,7 +256,7 @@ public class Amazing {
                         GOTO(530);
                     continue;
                 case 530:
-                    if (s != v)
+                    if (s != vertical)
                         GOTO(560);
                     else
                         GOTO(540);
@@ -324,7 +305,7 @@ public class Amazing {
                         GOTO(620);
                     continue;
                 case 620:
-                    if (r == h)
+                    if (r == horizontal)
                         GOTO(720);
                     else
                         GOTO(630);
@@ -336,7 +317,7 @@ public class Amazing {
                         GOTO(640);
                     continue;
                 case 640:
-                    if (s != v)
+                    if (s != vertical)
                         GOTO(670);
                     else
                         GOTO(650);
@@ -384,7 +365,7 @@ public class Amazing {
                         GOTO(720);
                     continue;
                 case 720:
-                    if (s != v)
+                    if (s != vertical)
                         GOTO(750);
                     else
                         GOTO(730);
@@ -421,7 +402,7 @@ public class Amazing {
                     GOTO(980);
                     continue;
                 case 790:
-                    if (r == h)
+                    if (r == horizontal)
                         GOTO(880);
                     else
                         GOTO(800);
@@ -433,7 +414,7 @@ public class Amazing {
                         GOTO(810);
                     continue;
                 case 810:
-                    if (s != v)
+                    if (s != vertical)
                         GOTO(840);
                     else
                         GOTO(820);
@@ -470,7 +451,7 @@ public class Amazing {
                     GOTO(1020);
                     continue;
                 case 880:
-                    if (s != v)
+                    if (s != vertical)
                         GOTO(910);
                     else
                         GOTO(890);
@@ -503,12 +484,12 @@ public class Amazing {
                     continue;
                 case 950:
                     c++;
-                    vArray[r - 1][s] = 2;
+                    matrice[r - 1][s] = 2;
                     r--;
                     GOTO(960);
                     continue;
                 case 960:
-                    if (c == h * v + 1)
+                    if (c == horizontal * vertical + 1)
                         GOTO(1200);
                     else
                         GOTO(970);
@@ -526,9 +507,9 @@ public class Amazing {
                     GOTO(1000);
                     continue;
                 case 1000:
-                    vArray[r][s - 1] = 1;
+                    matrice[r][s - 1] = 1;
                     s--;
-                    if (c == h * v + 1)
+                    if (c == horizontal * vertical + 1)
                         GOTO(1200);
                     else
                         GOTO(1010);
@@ -543,17 +524,17 @@ public class Amazing {
                     continue;
                 case 1030:
                     c++;
-                    if (vArray[r][s] == 0)
+                    if (isClosedBottomRight(matrice[r][s]))
                         GOTO(1050);
                     else
                         GOTO(1040);
                     continue;
                 case 1040:
-                    vArray[r][s] = 3;
+                    matrice[r][s] = 3;
                     GOTO(1060);
                     continue;
                 case 1050:
-                    vArray[r][s] = 2;
+                    matrice[r][s] = 2;
                     GOTO(1060);
                     continue;
                 case 1060:
@@ -561,7 +542,7 @@ public class Amazing {
                     GOTO(1070);
                     continue;
                 case 1070:
-                    if (c == h * v + 1)
+                    if (c == horizontal * vertical + 1)
                         GOTO(1200);
                     else
                         GOTO(1080);
@@ -578,22 +559,22 @@ public class Amazing {
                 case 1100:
                     wArray[r][s + 1] = c;
                     c++;
-                    if (vArray[r][s] == 0)
+                    if (isClosedBottomRight(matrice[r][s]))
                         GOTO(1120);
                     else
                         GOTO(1110);
                     continue;
                 case 1110:
-                    vArray[r][s] = 3;
+                    matrice[r][s] = 3;
                     GOTO(1130);
                     continue;
                 case 1120:
-                    vArray[r][s] = 1;
+                    matrice[r][s] = 1;
                     GOTO(1130);
                     continue;
                 case 1130:
                     s++;
-                    if (c == v * h + 1)
+                    if (c == vertical * horizontal + 1)
                         GOTO(1200);
                     else
                         GOTO(1140);
@@ -606,18 +587,18 @@ public class Amazing {
                     GOTO(1160);
                     continue;
                 case 1160:
-                    if (vArray[r][s] == 0)
+                    if (isClosedBottomRight(matrice[r][s]))
                         GOTO(1180);
                     else
                         GOTO(1170);
                     continue;
                 case 1170:
-                    vArray[r][s] = 3;
+                    matrice[r][s] = 3;
                     q = 0;
                     GOTO(1190);
                     continue;
                 case 1180:
-                    vArray[r][s] = 1;
+                    matrice[r][s] = 1;
                     q = 0;
                     r = 1;
                     s = 1;
@@ -632,32 +613,62 @@ public class Amazing {
             }
 
         }
+        display(horizontal, vertical, matrice);
 
-        // 1200:
-        for (int j = 1; j <= v; j++) {
-            print("I");        // 1210
 
-            for (int i = 1; i <= h; i++) {
+    }
+
+    private static boolean isClosedBottomRight(int i) {
+        return i == 0;
+    }
+
+    private static void initMaze() {
+        result.setLength(0);
+        print("Amazing - Copyright by Creative Computing, Morristown, NJ");
+        println();
+    }
+
+    private static void displayFirstLine(int horizontal, int x) {
+        // 130:170
+        for (int i = 1; i <= horizontal; i++) {
+            if (i == x)
+                print(":  ");
+            else
+                print(":--");
+        }
+        // 180
+        print(":");
+        println();
+    }
+
+    private static void display(int horizontal, int vertical, int[][] vArray) {
+
+        for (int j = 1; j <= vertical; j++) {
+            print("I");
+
+            for (int i = 1; i <= horizontal; i++) {
                 if (vArray[i][j] >= 2)
-                    print("   ");  // 1240
+                    print("   ");
                 else
-                    print("  I");  // 1260
+                    print("  I");
             }
 
-            print(" ");   // 1280
+            print(" ");
             println();
 
-            for (int i = 1; i <= h; i++) {
-                if (vArray[i][j] == 0)
-                    print(":--");   // 1300, 1340
-                else if (vArray[i][j] == 2)
-                    print(":--");  // 1310, 1340
+            for (int i = 1; i <= horizontal; i++) {
+                if (isClosedBottomRight(vArray[i][j]) || isClosedBottom(vArray[i][j]))
+                    print(":--");
                 else
-                    print(":  "); // 1320
+                    print(":  ");
             }
 
             print(":");    // 1360
             println();
         }
+    }
+
+    private static boolean isClosedBottom(int i) {
+        return i == 2;
     }
 }
