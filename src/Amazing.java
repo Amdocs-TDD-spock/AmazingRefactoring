@@ -13,6 +13,11 @@ public class Amazing {
     public static Random random = new Random(0);
     static StringBuffer result = new StringBuffer();
 
+    private static final int CLOSED = 0;
+    private static final int RIGHT_CLOSED = 1;
+    private static final int BOTTOM_CLOSED = 2;
+    private static final int OPENED = 3;
+
     public static void main(String[] args) {
         doit(Integer.parseInt(args[0]),Integer.parseInt(args[1]));
         System.out.println(result);
@@ -38,60 +43,43 @@ public class Amazing {
         target = lineno;
     }
 
-    public static void doit(int horizontal, int vertical) {
+    public static void doit(int rowSize, int columnSize) {
         clear();
         print("Amazing - Copyright by Creative Computing, Morristown, NJ");
         println();
 
-        int h = horizontal;
-        int v = vertical;
-        if (h == 1 || v == 1) return;
 
-        int[][] wArray = new int[h + 1][v + 1];
-        for (int i = 0; i <= h; i++) {
-            wArray[i] = new int[v + 1];
-        }
+        if (rowSize == 1 || columnSize == 1) return;
 
-        int[][] vArray = new int[h + 1][v + 1];
-        for (int i = 0; i <= h; i++) {
-            vArray[i] = new int[v + 1];
-        }
+        int[][] wArray = new int[rowSize + 1][columnSize + 1];
+        int[][] vArray = new int[rowSize + 1][columnSize + 1];
 
         int q = 0;
         int z = 0;
-        int x = rnd(h);
+        int topDoorIndex = rnd(rowSize);
+        printFirstLine(rowSize, topDoorIndex);
 
-        // 130:170
-        for (int i = 1; i <= h; i++) {
-            if (i == x)
-                print(":  ");
-            else
-                print(":--");
-        }
-        // 180
-        print(":");
-        println();
 
         // 190
         int c = 1;
-        wArray[x][1] = c;
+        wArray[topDoorIndex][1] = c;
         c++;
 
         // 200
-        int r = x;
+        int r = topDoorIndex;
         int s = 1;
         GOTO(270);
 
         while (target != -1) {
             switch (target) {
                 case 210:
-                    if (r != h)
+                    if (r != rowSize)
                         GOTO(250);
                     else
                         GOTO(220);
                     continue;
                 case 220:
-                    if (s != v)
+                    if (s != columnSize)
                         GOTO(240);
                     else
                         GOTO(230);
@@ -141,7 +129,7 @@ public class Amazing {
                         GOTO(310);
                     continue;
                 case 310:
-                    if (r == h)
+                    if (r == rowSize)
                         GOTO(350);
                     else
                         GOTO(320);
@@ -153,21 +141,21 @@ public class Amazing {
                         GOTO(330);
                     continue;
                 case 330:
-                    x = rnd(3);
+                    topDoorIndex = rnd(3);
                     GOTO(340);
                     continue;
                 case 340:
-                    if (x == 1)
+                    if (topDoorIndex == 1)
                         GOTO(940);
-                    else if (x == 2)
+                    else if (topDoorIndex == 2)
                         GOTO(980);
-                    else if (x == 3)
+                    else if (topDoorIndex == 3)
                         GOTO(1020);
                     else
                         GOTO(350);
                     continue;
                 case 350:
-                    if (s != v)
+                    if (s != columnSize)
                         GOTO(380);
                     else
                         GOTO(360);
@@ -189,33 +177,33 @@ public class Amazing {
                         GOTO(390);
                     continue;
                 case 390:
-                    x = rnd(3);
+                    topDoorIndex = rnd(3);
                     GOTO(400);
                     continue;
                 case 400:
-                    if (x == 1)
+                    if (topDoorIndex == 1)
                         GOTO(940);
-                    else if (x == 2)
+                    else if (topDoorIndex == 2)
                         GOTO(980);
-                    else if (x == 3)
+                    else if (topDoorIndex == 3)
                         GOTO(1090);
                     else
                         GOTO(410);
                     continue;
                 case 410:
-                    x = rnd(2);
+                    topDoorIndex = rnd(2);
                     GOTO(420);
                     continue;
                 case 420:
-                    if (x == 1)
+                    if (topDoorIndex == 1)
                         GOTO(940);
-                    else if (x == 2)
+                    else if (topDoorIndex == 2)
                         GOTO(980);
                     else
                         GOTO(430);
                     continue;
                 case 430:
-                    if (r == h)
+                    if (r == rowSize)
                         GOTO(530);
                     else
                         GOTO(440);
@@ -227,7 +215,7 @@ public class Amazing {
                         GOTO(450);
                     continue;
                 case 450:
-                    if (s != v)
+                    if (s != columnSize)
                         GOTO(480);
                     else
                         GOTO(460);
@@ -249,40 +237,40 @@ public class Amazing {
                         GOTO(490);
                     continue;
                 case 490:
-                    x = rnd(3);
+                    topDoorIndex = rnd(3);
                     GOTO(500);
                     continue;
                 case 500:
-                    if (x == 1)
+                    if (topDoorIndex == 1)
                         GOTO(940);
-                    else if (x == 2)
+                    else if (topDoorIndex == 2)
                         GOTO(1020);
-                    else if (x == 3)
+                    else if (topDoorIndex == 3)
                         GOTO(1090);
                     else
                         GOTO(510);
                     continue;
                 case 510:
-                    x = rnd(2);
+                    topDoorIndex = rnd(2);
                     GOTO(520);
                     continue;
                 case 520:
-                    if (x == 1)
+                    if (topDoorIndex == 1)
                         GOTO(940);
-                    else if (x == 2)
+                    else if (topDoorIndex == 2)
                         GOTO(1020);
                     else
                         GOTO(530);
                     continue;
                 case 530:
-                    if (s != v)
+                    if (s != columnSize)
                         GOTO(560);
                     else
                         GOTO(540);
                     continue;
                 case 540:
                     if (z == 1)
-                        GOTO(590);
+                        GOTO(940);
                     else
                         GOTO(550);
                     continue;
@@ -292,24 +280,19 @@ public class Amazing {
                     continue;
                 case 560:
                     if (wArray[r][s + 1] != 0)
-                        GOTO(590);
+                        GOTO(940);
                     else
                         GOTO(570);
                     continue;
                 case 570:
-                    x = rnd(2);
+                    topDoorIndex = rnd(2);
                     GOTO(580);
                     continue;
                 case 580:
-                    if (x == 1)
-                        GOTO(940);
-                    else if (x == 2)
+                    if (topDoorIndex == 2)
                         GOTO(1090);
                     else
-                        GOTO(590);
-                    continue;
-                case 590:
-                    GOTO(940);
+                        GOTO(940);
                     continue;
                 case 600:
                     if (s - 1 == 0)
@@ -324,7 +307,7 @@ public class Amazing {
                         GOTO(620);
                     continue;
                 case 620:
-                    if (r == h)
+                    if (r == rowSize)
                         GOTO(720);
                     else
                         GOTO(630);
@@ -336,7 +319,7 @@ public class Amazing {
                         GOTO(640);
                     continue;
                 case 640:
-                    if (s != v)
+                    if (s != columnSize)
                         GOTO(670);
                     else
                         GOTO(650);
@@ -358,33 +341,33 @@ public class Amazing {
                         GOTO(680);
                     continue;
                 case 680:
-                    x = rnd(3);
+                    topDoorIndex = rnd(3);
                     GOTO(690);
                     continue;
                 case 690:
-                    if (x == 1)
+                    if (topDoorIndex == 1)
                         GOTO(980);
-                    else if (x == 2)
+                    else if (topDoorIndex == 2)
                         GOTO(1020);
-                    else if (x == 3)
+                    else if (topDoorIndex == 3)
                         GOTO(1090);
                     else
                         GOTO(700);
                     continue;
                 case 700:
-                    x = rnd(2);
+                    topDoorIndex = rnd(2);
                     GOTO(710);
                     continue;
                 case 710:
-                    if (x == 1)
+                    if (topDoorIndex == 1)
                         GOTO(980);
-                    else if (x == 2)
+                    else if (topDoorIndex == 2)
                         GOTO(1020);
                     else
                         GOTO(720);
                     continue;
                 case 720:
-                    if (s != v)
+                    if (s != columnSize)
                         GOTO(750);
                     else
                         GOTO(730);
@@ -406,13 +389,13 @@ public class Amazing {
                         GOTO(760);
                     continue;
                 case 760:
-                    x = rnd(2);
+                    topDoorIndex = rnd(2);
                     GOTO(770);
                     continue;
                 case 770:
-                    if (x == 1)
+                    if (topDoorIndex == 1)
                         GOTO(980);
-                    else if (x == 2)
+                    else if (topDoorIndex == 2)
                         GOTO(1090);
                     else
                         GOTO(780);
@@ -421,7 +404,7 @@ public class Amazing {
                     GOTO(980);
                     continue;
                 case 790:
-                    if (r == h)
+                    if (r == rowSize)
                         GOTO(880);
                     else
                         GOTO(800);
@@ -433,7 +416,7 @@ public class Amazing {
                         GOTO(810);
                     continue;
                 case 810:
-                    if (s != v)
+                    if (s != columnSize)
                         GOTO(840);
                     else
                         GOTO(820);
@@ -455,13 +438,13 @@ public class Amazing {
                         GOTO(850);
                     continue;
                 case 850:
-                    x = rnd(2);
+                    topDoorIndex = rnd(2);
                     GOTO(860);
                     continue;
                 case 860:
-                    if (x == 1)
+                    if (topDoorIndex == 1)
                         GOTO(1020);
-                    else if (x == 2)
+                    else if (topDoorIndex == 2)
                         GOTO(1090);
                     else
                         GOTO(870);
@@ -470,7 +453,7 @@ public class Amazing {
                     GOTO(1020);
                     continue;
                 case 880:
-                    if (s != v)
+                    if (s != columnSize)
                         GOTO(910);
                     else
                         GOTO(890);
@@ -503,12 +486,12 @@ public class Amazing {
                     continue;
                 case 950:
                     c++;
-                    vArray[r - 1][s] = 2;
+                    vArray[r - 1][s] = BOTTOM_CLOSED;
                     r--;
                     GOTO(960);
                     continue;
                 case 960:
-                    if (c == h * v + 1)
+                    if (c == rowSize * columnSize + 1)
                         GOTO(1200);
                     else
                         GOTO(970);
@@ -526,9 +509,9 @@ public class Amazing {
                     GOTO(1000);
                     continue;
                 case 1000:
-                    vArray[r][s - 1] = 1;
+                    vArray[r][s - 1] = RIGHT_CLOSED;
                     s--;
-                    if (c == h * v + 1)
+                    if (c == rowSize * columnSize + 1)
                         GOTO(1200);
                     else
                         GOTO(1010);
@@ -543,17 +526,17 @@ public class Amazing {
                     continue;
                 case 1030:
                     c++;
-                    if (vArray[r][s] == 0)
+                    if (vArray[r][s] == CLOSED)
                         GOTO(1050);
                     else
                         GOTO(1040);
                     continue;
                 case 1040:
-                    vArray[r][s] = 3;
+                    vArray[r][s] = OPENED;
                     GOTO(1060);
                     continue;
                 case 1050:
-                    vArray[r][s] = 2;
+                    vArray[r][s] = BOTTOM_CLOSED;
                     GOTO(1060);
                     continue;
                 case 1060:
@@ -561,7 +544,7 @@ public class Amazing {
                     GOTO(1070);
                     continue;
                 case 1070:
-                    if (c == h * v + 1)
+                    if (c == rowSize * columnSize + 1)
                         GOTO(1200);
                     else
                         GOTO(1080);
@@ -578,7 +561,7 @@ public class Amazing {
                 case 1100:
                     wArray[r][s + 1] = c;
                     c++;
-                    if (vArray[r][s] == 0)
+                    if (vArray[r][s] == CLOSED)
                         GOTO(1120);
                     else
                         GOTO(1110);
@@ -588,12 +571,12 @@ public class Amazing {
                     GOTO(1130);
                     continue;
                 case 1120:
-                    vArray[r][s] = 1;
+                    vArray[r][s] = RIGHT_CLOSED;
                     GOTO(1130);
                     continue;
                 case 1130:
                     s++;
-                    if (c == v * h + 1)
+                    if (c == columnSize * rowSize + 1)
                         GOTO(1200);
                     else
                         GOTO(1140);
@@ -606,18 +589,18 @@ public class Amazing {
                     GOTO(1160);
                     continue;
                 case 1160:
-                    if (vArray[r][s] == 0)
+                    if (vArray[r][s] == CLOSED)
                         GOTO(1180);
                     else
                         GOTO(1170);
                     continue;
                 case 1170:
-                    vArray[r][s] = 3;
+                    vArray[r][s] = OPENED;
                     q = 0;
                     GOTO(1190);
                     continue;
                 case 1180:
-                    vArray[r][s] = 1;
+                    vArray[r][s] = RIGHT_CLOSED;
                     q = 0;
                     r = 1;
                     s = 1;
@@ -634,10 +617,10 @@ public class Amazing {
         }
 
         // 1200:
-        for (int j = 1; j <= v; j++) {
+        for (int j = 1; j <= columnSize; j++) {
             print("I");        // 1210
 
-            for (int i = 1; i <= h; i++) {
+            for (int i = 1; i <= rowSize; i++) {
                 if (vArray[i][j] >= 2)
                     print("   ");  // 1240
                 else
@@ -647,7 +630,7 @@ public class Amazing {
             print(" ");   // 1280
             println();
 
-            for (int i = 1; i <= h; i++) {
+            for (int i = 1; i <= rowSize; i++) {
                 if (vArray[i][j] == 0)
                     print(":--");   // 1300, 1340
                 else if (vArray[i][j] == 2)
@@ -659,5 +642,18 @@ public class Amazing {
             print(":");    // 1360
             println();
         }
+    }
+
+    private static void printFirstLine(int horizontal, int topDoorIndex) {
+
+        for (int i = 1; i <= horizontal; i++) {
+            if (i == topDoorIndex)
+                print(":  ");
+            else
+                print(":--");
+        }
+
+        print(":");
+        println();
     }
 }
