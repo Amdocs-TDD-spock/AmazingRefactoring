@@ -1,6 +1,7 @@
 // Copyright 2003, William C. Wake. All rights reserved.
 
 import junit.framework.TestCase;
+import org.junit.Test;
 
 import java.util.Random;
 
@@ -76,7 +77,22 @@ public class TestAmazing extends TestCase {
         assertEquals("Should have the maze that was expected", expected, Amazing.result.toString());
 
     }
+    public void testSeed100size3x3() {
+        String expected =
+                "Amazing - Copyright by Creative Computing, Morristown, NJ\n" +
+                        ":--:--:  :\n" +
+                        "I        I \n" +
+                        ":  :--:  :\n" +
+                        "I  I     I \n" +
+                        ":  :  :--:\n" +
+                        "I  I     I \n" +
+                        ":--:  :--:\n";
 
+        Amazing.random = new Random(100);
+        Amazing.doit(3, 3);
+        assertEquals("Should have the maze that was expected", expected, Amazing.result.toString());
+
+    }
     public void testSeed0size0x0() {
         String expected =
                 "Amazing - Copyright by Creative Computing, Morristown, NJ\n";
@@ -244,5 +260,14 @@ public class TestAmazing extends TestCase {
         Amazing.doit(142, 73);
         assertEquals("Should have the maze that was expected", expected, Amazing.result.toString());
 
+    }
+
+    @Test
+    public void testRndCount1(){
+        assertEquals(Amazing.rnd(1), 1);
+        assertEquals(Amazing.rnd(1), 1);
+        assertEquals(Amazing.rnd(1), 1);
+        assertEquals(Amazing.rnd(1), 1);
+        assertEquals(Amazing.rnd(1), 1);
     }
 }

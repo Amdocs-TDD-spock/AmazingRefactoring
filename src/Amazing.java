@@ -7,6 +7,8 @@
  * + This transliteration to Java was created by Bill Wake, William.Wake@acm.org
  */
 import java.util.Random;
+import java.util.stream.IntStream;
+import java.util.stream.Stream;
 
 public class Amazing {
     static int target = 0;      // where GOTO goes
@@ -35,6 +37,11 @@ public class Amazing {
         result.append(text);
     }
 
+    /**
+     * Retourne un entier aléatoire entre 1 et count
+     * @param count
+     * @return
+     */
     public static int rnd(int count) {
         return (int) (count * random.nextFloat()) + 1;
     }
@@ -56,17 +63,17 @@ public class Amazing {
 
         int q = 0;
         int z = 0;
-        int topDoorIndex = rnd(rowSize);
-        printFirstLine(rowSize, topDoorIndex);
+        int currentLinePathIndex = rnd(rowSize);
+        printFirstLine(rowSize, currentLinePathIndex);
 
 
         // 190
-        int c = 1;
-        wArray[topDoorIndex][1] = c;
-        c++;
+        int processedCellCount = 1;
+        wArray[currentLinePathIndex][1] = processedCellCount;
+        processedCellCount++;
 
         // 200
-        int r = topDoorIndex;
+        int r = currentLinePathIndex;
         int s = 1;
         GOTO(270);
 
@@ -141,15 +148,15 @@ public class Amazing {
                         GOTO(330);
                     continue;
                 case 330:
-                    topDoorIndex = rnd(3);
+                    currentLinePathIndex = rnd(3);
                     GOTO(340);
                     continue;
                 case 340:
-                    if (topDoorIndex == 1)
+                    if (currentLinePathIndex == 1)
                         GOTO(940);
-                    else if (topDoorIndex == 2)
+                    else if (currentLinePathIndex == 2)
                         GOTO(980);
-                    else if (topDoorIndex == 3)
+                    else if (currentLinePathIndex == 3)
                         GOTO(1020);
                     else
                         GOTO(350);
@@ -177,27 +184,27 @@ public class Amazing {
                         GOTO(390);
                     continue;
                 case 390:
-                    topDoorIndex = rnd(3);
+                    currentLinePathIndex = rnd(3);
                     GOTO(400);
                     continue;
                 case 400:
-                    if (topDoorIndex == 1)
+                    if (currentLinePathIndex == 1)
                         GOTO(940);
-                    else if (topDoorIndex == 2)
+                    else if (currentLinePathIndex == 2)
                         GOTO(980);
-                    else if (topDoorIndex == 3)
+                    else if (currentLinePathIndex == 3)
                         GOTO(1090);
                     else
                         GOTO(410);
                     continue;
                 case 410:
-                    topDoorIndex = rnd(2);
+                    currentLinePathIndex = rnd(2);
                     GOTO(420);
                     continue;
                 case 420:
-                    if (topDoorIndex == 1)
+                    if (currentLinePathIndex == 1)
                         GOTO(940);
-                    else if (topDoorIndex == 2)
+                    else if (currentLinePathIndex == 2)
                         GOTO(980);
                     else
                         GOTO(430);
@@ -237,27 +244,27 @@ public class Amazing {
                         GOTO(490);
                     continue;
                 case 490:
-                    topDoorIndex = rnd(3);
+                    currentLinePathIndex = rnd(3);
                     GOTO(500);
                     continue;
                 case 500:
-                    if (topDoorIndex == 1)
+                    if (currentLinePathIndex == 1)
                         GOTO(940);
-                    else if (topDoorIndex == 2)
+                    else if (currentLinePathIndex == 2)
                         GOTO(1020);
-                    else if (topDoorIndex == 3)
+                    else if (currentLinePathIndex == 3)
                         GOTO(1090);
                     else
                         GOTO(510);
                     continue;
                 case 510:
-                    topDoorIndex = rnd(2);
+                    currentLinePathIndex = rnd(2);
                     GOTO(520);
                     continue;
                 case 520:
-                    if (topDoorIndex == 1)
+                    if (currentLinePathIndex == 1)
                         GOTO(940);
-                    else if (topDoorIndex == 2)
+                    else if (currentLinePathIndex == 2)
                         GOTO(1020);
                     else
                         GOTO(530);
@@ -285,11 +292,11 @@ public class Amazing {
                         GOTO(570);
                     continue;
                 case 570:
-                    topDoorIndex = rnd(2);
+                    currentLinePathIndex = rnd(2);
                     GOTO(580);
                     continue;
                 case 580:
-                    if (topDoorIndex == 2)
+                    if (currentLinePathIndex == 2)
                         GOTO(1090);
                     else
                         GOTO(940);
@@ -341,27 +348,27 @@ public class Amazing {
                         GOTO(680);
                     continue;
                 case 680:
-                    topDoorIndex = rnd(3);
+                    currentLinePathIndex = rnd(3);
                     GOTO(690);
                     continue;
                 case 690:
-                    if (topDoorIndex == 1)
+                    if (currentLinePathIndex == 1)
                         GOTO(980);
-                    else if (topDoorIndex == 2)
+                    else if (currentLinePathIndex == 2)
                         GOTO(1020);
-                    else if (topDoorIndex == 3)
+                    else if (currentLinePathIndex == 3)
                         GOTO(1090);
                     else
                         GOTO(700);
                     continue;
                 case 700:
-                    topDoorIndex = rnd(2);
+                    currentLinePathIndex = rnd(2);
                     GOTO(710);
                     continue;
                 case 710:
-                    if (topDoorIndex == 1)
+                    if (currentLinePathIndex == 1)
                         GOTO(980);
-                    else if (topDoorIndex == 2)
+                    else if (currentLinePathIndex == 2)
                         GOTO(1020);
                     else
                         GOTO(720);
@@ -389,13 +396,13 @@ public class Amazing {
                         GOTO(760);
                     continue;
                 case 760:
-                    topDoorIndex = rnd(2);
+                    currentLinePathIndex = rnd(2);
                     GOTO(770);
                     continue;
                 case 770:
-                    if (topDoorIndex == 1)
+                    if (currentLinePathIndex == 1)
                         GOTO(980);
-                    else if (topDoorIndex == 2)
+                    else if (currentLinePathIndex == 2)
                         GOTO(1090);
                     else
                         GOTO(780);
@@ -438,13 +445,13 @@ public class Amazing {
                         GOTO(850);
                     continue;
                 case 850:
-                    topDoorIndex = rnd(2);
+                    currentLinePathIndex = rnd(2);
                     GOTO(860);
                     continue;
                 case 860:
-                    if (topDoorIndex == 1)
+                    if (currentLinePathIndex == 1)
                         GOTO(1020);
-                    else if (topDoorIndex == 2)
+                    else if (currentLinePathIndex == 2)
                         GOTO(1090);
                     else
                         GOTO(870);
@@ -481,37 +488,37 @@ public class Amazing {
                     GOTO(1190);
                     continue;
                 case 940:
-                    wArray[r - 1][s] = c;
+                    wArray[r - 1][s] = processedCellCount;
                     GOTO(950);
                     continue;
                 case 950:
-                    c++;
+                    processedCellCount++;
                     vArray[r - 1][s] = BOTTOM_CLOSED;
                     r--;
                     GOTO(960);
                     continue;
                 case 960:
-                    if (c == rowSize * columnSize + 1)
-                        GOTO(1200);
+                    if (processedCellCount == rowSize * columnSize + 1)
+                        GOTO(1200);// Exit operation
                     else
-                        GOTO(970);
+                        GOTO(970); // Restart switch
                     continue;
                 case 970:
                     q = 0;
                     GOTO(270);
                     continue;
                 case 980:
-                    wArray[r][s - 1] = c;
+                    wArray[r][s - 1] = processedCellCount;
                     GOTO(990);
                     continue;
                 case 990:
-                    c++;
+                    processedCellCount++;
                     GOTO(1000);
                     continue;
                 case 1000:
                     vArray[r][s - 1] = RIGHT_CLOSED;
                     s--;
-                    if (c == rowSize * columnSize + 1)
+                    if (processedCellCount == rowSize * columnSize + 1)
                         GOTO(1200);
                     else
                         GOTO(1010);
@@ -521,11 +528,11 @@ public class Amazing {
                     GOTO(270);
                     continue;
                 case 1020:
-                    wArray[r + 1][s] = c;
+                    wArray[r + 1][s] = processedCellCount;
                     GOTO(1030);
                     continue;
                 case 1030:
-                    c++;
+                    processedCellCount++;
                     if (vArray[r][s] == CLOSED)
                         GOTO(1050);
                     else
@@ -544,7 +551,7 @@ public class Amazing {
                     GOTO(1070);
                     continue;
                 case 1070:
-                    if (c == rowSize * columnSize + 1)
+                    if (processedCellCount == rowSize * columnSize + 1)
                         GOTO(1200);
                     else
                         GOTO(1080);
@@ -559,15 +566,15 @@ public class Amazing {
                         GOTO(1100);
                     continue;
                 case 1100:
-                    wArray[r][s + 1] = c;
-                    c++;
+                    wArray[r][s + 1] = processedCellCount;
+                    processedCellCount++;
                     if (vArray[r][s] == CLOSED)
                         GOTO(1120);
                     else
                         GOTO(1110);
                     continue;
                 case 1110:
-                    vArray[r][s] = 3;
+                    vArray[r][s] = OPENED;
                     GOTO(1130);
                     continue;
                 case 1120:
@@ -576,7 +583,7 @@ public class Amazing {
                     continue;
                 case 1130:
                     s++;
-                    if (c == columnSize * rowSize + 1)
+                    if (processedCellCount == columnSize * rowSize + 1)
                         GOTO(1200);
                     else
                         GOTO(1140);
@@ -642,6 +649,28 @@ public class Amazing {
             print(":");    // 1360
             println();
         }
+        System.out.println("warray:");
+
+        for (int j = 1; j <= columnSize; j++) {
+
+            for (int i = 1; i <= rowSize; i++) {
+                System.out.print(wArray[i][j] + "\t");
+            }
+            System.out.println();
+        }
+
+            /*Stream.of(wArray).forEachOrdered(line -> {
+            IntStream.of(line).forEachOrdered((i) -> System.out.print(i + "\t"));
+            System.out.println();
+                }
+        );
+
+        System.out.println("varray:");
+        Stream.of(vArray).forEachOrdered(line -> {
+                    IntStream.of(line).forEachOrdered((i) -> System.out.print(i + "\t"));
+                    System.out.println();
+                }
+        );*/
     }
 
     private static void printFirstLine(int horizontal, int topDoorIndex) {
