@@ -248,11 +248,11 @@ public class Amazing {
                         GOTO(600);
                     continue;
                 case BOTTOM_WALL: // open bottom wall of current cell
-                    openBottomOfCell(mazeCell, currentCol, currentRow);
                     if (strangeBoolean) {
                         evenMoreStrangeBoolean = true;
                         strangeBoolean = false;
                         if (mazeCell[currentCol][currentRow] == CellState.CLOSED_RIGHT_AND_BOTTOM) {
+                            openBottomOfCell(mazeCell, currentCol, currentRow);
                             currentCol = 1;
                             currentRow = 1;
                             if (!cellWasProcessed[currentCol][currentRow])
@@ -266,6 +266,7 @@ public class Amazing {
                         // move to cell below
                         cellWasProcessed[currentCol][currentRow + 1] = true;
                         c++;
+                        openBottomOfCell(mazeCell, currentCol, currentRow);
                         currentRow++;
                         if (isTheEnd(colCount, rowCount, c))
                             GOTO(1200);
