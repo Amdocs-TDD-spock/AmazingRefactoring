@@ -269,7 +269,7 @@ public class Amazing {
 
                 case 1200:
                     target = -1;
-                    continue;
+
             }
 
         }
@@ -297,7 +297,6 @@ public class Amazing {
     /**
      * Opens the right wall of the cell at the given position
      *
-     * @param cellState
      */
     private static void openRightOfCell(CellState[][] mazeCell, int currentCol, int currentRow) {
         if (mazeCell[currentCol][currentRow] == CellState.CLOSED_RIGHT_AND_BOTTOM) {
@@ -310,7 +309,6 @@ public class Amazing {
     /**
      * Opens the bottom wall of the cell at the given position
      *
-     * @param cellState
      */
     private static void openBottomOfCell(CellState[][] maze, int colIndex, int rowIndex) {
         if (maze[colIndex][rowIndex] == CellState.CLOSED_RIGHT_AND_BOTTOM) {
@@ -366,18 +364,16 @@ public class Amazing {
     }
 
     private enum CellState {
-        CLOSED_RIGHT_AND_BOTTOM(0, "  I", ":--"),
-        OPENED_BOTTOM(1, "  I", ":  "),
-        OPENED_RIGHT(2, "   ", ":--"),
-        OPENED_RIGHT_AND_BOTTOM(3, "   ", ":  ");
+        CLOSED_RIGHT_AND_BOTTOM("  I", ":--"),
+        OPENED_BOTTOM("  I", ":  "),
+        OPENED_RIGHT("   ", ":--"),
+        OPENED_RIGHT_AND_BOTTOM("   ", ":  ");
 
-        private int value;
+
         private String firstLineRepresentation;
         private String secondLineRepresentation;
 
-        CellState(int value, String firstLineRepresentation, String secondLineRepresentation) {
-
-            this.value = value;
+        CellState(String firstLineRepresentation, String secondLineRepresentation) {
             this.firstLineRepresentation = firstLineRepresentation;
             this.secondLineRepresentation = secondLineRepresentation;
         }
