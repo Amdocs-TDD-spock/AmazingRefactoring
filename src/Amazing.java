@@ -244,8 +244,9 @@ public class Amazing {
                 case BOTTOM_WALL: // open bottom wall of current cell
                     if (currentRow == rowCount) {
                         mazeExitIsDefined = true;
-                        if (mazeCell[currentCol][currentRow] == CellState.CLOSED_RIGHT_AND_BOTTOM) {
-                            openBottomOfCell(mazeCell, currentCol, currentRow);
+                        CellState previousState = mazeCell[currentCol][currentRow];
+                        openBottomOfCell(mazeCell, currentCol, currentRow);
+                        if (previousState == CellState.CLOSED_RIGHT_AND_BOTTOM) {
                             currentCol = 1;
                             currentRow = 1;
                             if (!cellWasProcessed[currentCol][currentRow])
