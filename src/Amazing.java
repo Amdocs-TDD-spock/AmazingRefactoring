@@ -76,8 +76,6 @@ public class Amazing {
             }
         }
 
-        boolean currentRowIsLastRow = false; 
-
         boolean evenMoreStrangeBoolean = false; //boolean we don't know much about
 
 
@@ -123,7 +121,6 @@ public class Amazing {
                             } else if (evenMoreStrangeBoolean)
                                 OPEN(LEFT_WALL);
                             else {
-                                currentRowIsLastRow = true;
                                 openRandomWallOfCurrentCell(LEFT_WALL, BOTTOM_WALL);
                             }
                         } else if (currentRow != rowCount) {
@@ -135,7 +132,6 @@ public class Amazing {
                         } else if (evenMoreStrangeBoolean) {
                             openRandomWallOfCurrentCell(LEFT_WALL, RIGHT_WALL);
                         } else {
-                            currentRowIsLastRow = true;
                             openRandomWallOfCurrentCell(LEFT_WALL, RIGHT_WALL, BOTTOM_WALL);
                         }
                     } else {
@@ -149,7 +145,6 @@ public class Amazing {
                             } else if (evenMoreStrangeBoolean) {
                                 openRandomWallOfCurrentCell(LEFT_WALL, TOP_WALL);
                             } else {
-                                currentRowIsLastRow = true;
                                 openRandomWallOfCurrentCell(LEFT_WALL, TOP_WALL, BOTTOM_WALL);
                             }
                         } else {
@@ -168,7 +163,6 @@ public class Amazing {
                             } else if (evenMoreStrangeBoolean)
                                 GOTO(210);
                             else {
-                                currentRowIsLastRow = true;
                                 OPEN(BOTTOM_WALL);
                             }
                         } else if (currentRow != rowCount) {
@@ -180,7 +174,6 @@ public class Amazing {
                         } else if (evenMoreStrangeBoolean)
                             OPEN(RIGHT_WALL);
                         else {
-                            currentRowIsLastRow = true;
                             updateWArray = false;
                             OPEN(TOP_WALL);
                         }
@@ -194,7 +187,6 @@ public class Amazing {
                         } else if (evenMoreStrangeBoolean) {
                             OPEN(TOP_WALL);
                         } else {
-                            currentRowIsLastRow = true;
                             openRandomWallOfCurrentCell(TOP_WALL, BOTTOM_WALL);
                         }
                     } else if (currentRow != rowCount) {
@@ -206,7 +198,6 @@ public class Amazing {
                     } else if (evenMoreStrangeBoolean) {
                         openRandomWallOfCurrentCell(TOP_WALL, RIGHT_WALL);
                     } else {
-                        currentRowIsLastRow = true;
                         openRandomWallOfCurrentCell(TOP_WALL, RIGHT_WALL, BOTTOM_WALL);
                     }
                     continue;
@@ -218,7 +209,6 @@ public class Amazing {
                     if (isTheEnd(rowCount, colCount, c))
                         GOTO(1200);
                     else {
-                        currentRowIsLastRow = false;
                         GOTO(270);
                     }
                     continue;
@@ -236,7 +226,6 @@ public class Amazing {
                     if (isTheEnd(rowCount, colCount, c))
                         GOTO(1200);
                     else {
-                        currentRowIsLastRow = false;
                         GOTO(270);
                     }
                     continue;
@@ -252,9 +241,8 @@ public class Amazing {
                     continue;
                 case BOTTOM_WALL: // open bottom wall of current cell
 
-                    if (currentRowIsLastRow) {
+                    if (currentRow == rowCount) {
                         evenMoreStrangeBoolean = true;
-                        currentRowIsLastRow = false;
                         if (mazeCell[currentCol][currentRow] == CellState.CLOSED_RIGHT_AND_BOTTOM) {
                             openBottomOfCell(mazeCell, currentCol, currentRow);
                             currentCol = 1;
