@@ -37,6 +37,10 @@ public class Amazing {
         target = lineno;
     }
 
+    public static void goRandomlyTo(int... possibleWays) {
+        GOTO(possibleWays[rnd(possibleWays.length)-1]);
+    }
+
     public static void doit(int horizontal, int vertical) {
         initMaze();
 
@@ -95,53 +99,25 @@ public class Amazing {
                                 if (wArray[r][s + 1] != 0)
                                     GOTO(940);
                                 else {
-                                    x = rnd(2);
-                                    if (x == 1)
-                                        GOTO(940);
-                                    else
-                                        GOTO(1090);
+                                    goRandomlyTo(940,1090);
                                 }
                             } else if (evenMoreStrangeBoolean)
                                 GOTO(940);
                             else {
                                 strangeBoolean=true;
-                                x = rnd(2);
-                                if (x == 1)
-                                    GOTO(940);
-                                else
-                                    GOTO(1090);
+                                goRandomlyTo(940,1090);
                             }
                         } else if (s != vertical) {
                             if (wArray[r][s + 1] != 0) {
-                                x = rnd(2);
-                                if (x == 1)
-                                    GOTO(940);
-                                else
-                                    GOTO(1020);
+                                goRandomlyTo(940,1020);
                             } else {
-                                x = rnd(3);
-                                if (x == 1)
-                                    GOTO(940);
-                                else if (x == 2)
-                                    GOTO(1020);
-                                else
-                                    GOTO(1090);
+                                goRandomlyTo(940,1020,1090);
                             }
                         } else if (evenMoreStrangeBoolean) {
-                            x = rnd(2);
-                            if (x == 1)
-                                GOTO(940);
-                            else
-                                GOTO(1020);
+                            goRandomlyTo(940,1020);
                         } else {
                             strangeBoolean=true;
-                            x = rnd(3);
-                            if (x == 1)
-                                GOTO(940);
-                            else if (x == 2)
-                                GOTO(1020);
-                            else
-                                GOTO(1090);
+                            goRandomlyTo(940,1020,1090);
                         }
                     } else {
                         if (r == horizontal || wArray[r + 1][s] != 0) {
@@ -231,11 +207,7 @@ public class Amazing {
                                     if (wArray[r][s + 1] != 0)
                                         GOTO(1020);
                                     else {
-                                        x = rnd(2); //x=1 or 2
-                                        if (x == 1)
-                                            GOTO(1020);
-                                        else
-                                            GOTO(1090);
+                                        goRandomlyTo(1020,1090);
                                     }
                                 } else if (evenMoreStrangeBoolean)
                                     GOTO(1020);
