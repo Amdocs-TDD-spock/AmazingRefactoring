@@ -76,7 +76,7 @@ public class Amazing {
             }
         }
 
-        boolean strangeBoolean = false; //boolean we don't know much about
+        boolean currentRowIsLastRow = false; 
 
         boolean evenMoreStrangeBoolean = false; //boolean we don't know much about
 
@@ -115,7 +115,7 @@ public class Amazing {
                     else if (currentRow == 1 || cellAboveWasProcessed()) {
                         if (currentCol == colCount || cellAtRightWasProcessed()) {
                             if (currentRow != rowCount) {
-                                if (cellBelowWasProcessed())
+                                if (cellBelowWasProcessed()) // we cannot go down because another wall of the cell below is open
                                     OPEN(LEFT_WALL);
                                 else {
                                     openRandomWallOfCurrentCell(LEFT_WALL, BOTTOM_WALL);
@@ -123,7 +123,7 @@ public class Amazing {
                             } else if (evenMoreStrangeBoolean)
                                 OPEN(LEFT_WALL);
                             else {
-                                strangeBoolean = true;
+                                currentRowIsLastRow = true;
                                 openRandomWallOfCurrentCell(LEFT_WALL, BOTTOM_WALL);
                             }
                         } else if (currentRow != rowCount) {
@@ -135,7 +135,7 @@ public class Amazing {
                         } else if (evenMoreStrangeBoolean) {
                             openRandomWallOfCurrentCell(LEFT_WALL, RIGHT_WALL);
                         } else {
-                            strangeBoolean = true;
+                            currentRowIsLastRow = true;
                             openRandomWallOfCurrentCell(LEFT_WALL, RIGHT_WALL, BOTTOM_WALL);
                         }
                     } else {
@@ -149,7 +149,7 @@ public class Amazing {
                             } else if (evenMoreStrangeBoolean) {
                                 openRandomWallOfCurrentCell(LEFT_WALL, TOP_WALL);
                             } else {
-                                strangeBoolean = true;
+                                currentRowIsLastRow = true;
                                 openRandomWallOfCurrentCell(LEFT_WALL, TOP_WALL, BOTTOM_WALL);
                             }
                         } else {
@@ -168,7 +168,7 @@ public class Amazing {
                             } else if (evenMoreStrangeBoolean)
                                 GOTO(210);
                             else {
-                                strangeBoolean = true;
+                                currentRowIsLastRow = true;
                                 OPEN(BOTTOM_WALL);
                             }
                         } else if (currentRow != rowCount) {
@@ -180,7 +180,7 @@ public class Amazing {
                         } else if (evenMoreStrangeBoolean)
                             OPEN(RIGHT_WALL);
                         else {
-                            strangeBoolean = true;
+                            currentRowIsLastRow = true;
                             updateWArray = false;
                             OPEN(TOP_WALL);
                         }
@@ -194,7 +194,7 @@ public class Amazing {
                         } else if (evenMoreStrangeBoolean) {
                             OPEN(TOP_WALL);
                         } else {
-                            strangeBoolean = true;
+                            currentRowIsLastRow = true;
                             openRandomWallOfCurrentCell(TOP_WALL, BOTTOM_WALL);
                         }
                     } else if (currentRow != rowCount) {
@@ -206,7 +206,7 @@ public class Amazing {
                     } else if (evenMoreStrangeBoolean) {
                         openRandomWallOfCurrentCell(TOP_WALL, RIGHT_WALL);
                     } else {
-                        strangeBoolean = true;
+                        currentRowIsLastRow = true;
                         openRandomWallOfCurrentCell(TOP_WALL, RIGHT_WALL, BOTTOM_WALL);
                     }
                     continue;
@@ -218,7 +218,7 @@ public class Amazing {
                     if (isTheEnd(rowCount, colCount, c))
                         GOTO(1200);
                     else {
-                        strangeBoolean = false;
+                        currentRowIsLastRow = false;
                         GOTO(270);
                     }
                     continue;
@@ -236,7 +236,7 @@ public class Amazing {
                     if (isTheEnd(rowCount, colCount, c))
                         GOTO(1200);
                     else {
-                        strangeBoolean = false;
+                        currentRowIsLastRow = false;
                         GOTO(270);
                     }
                     continue;
@@ -252,9 +252,9 @@ public class Amazing {
                     continue;
                 case BOTTOM_WALL: // open bottom wall of current cell
 
-                    if (strangeBoolean) {
+                    if (currentRowIsLastRow) {
                         evenMoreStrangeBoolean = true;
-                        strangeBoolean = false;
+                        currentRowIsLastRow = false;
                         if (mazeCell[currentCol][currentRow] == CellState.CLOSED_RIGHT_AND_BOTTOM) {
                             openBottomOfCell(mazeCell, currentCol, currentRow);
                             currentCol = 1;
@@ -392,10 +392,6 @@ public class Amazing {
             this.value = value;
             this.firstLineRepresentation = firstLineRepresentation;
             this.secondLineRepresentation = secondLineRepresentation;
-        }
-
-        public int getValue() {
-            return value;
         }
 
         public void printFirstLine() {
