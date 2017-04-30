@@ -61,12 +61,12 @@ public class Amazing {
 
         displayFirstLine(colCount, mazeEnterColIndex);
 
-        // Way array ?
-        int[][] wArray = new int[colCount + 1][rowCount + 1];
+        // maintains which cells have been processed at least once until now
+        boolean[][] cellWasProcessed = new boolean[colCount + 1][rowCount + 1];
         CellState[][] mazeCell = new CellState[colCount + 1][rowCount + 1];
 
         for (int i = 0; i <= colCount; i++) {
-            wArray[i] = new int[rowCount + 1];
+            cellWasProcessed[i] = new boolean[rowCount + 1];
             mazeCell[i] = new CellState[rowCount + 1];
             for (int j = 0; j <= rowCount; j++) {
                 mazeCell[i][j] = CellState.CLOSED_RIGHT_AND_BOTTOM;
@@ -82,7 +82,7 @@ public class Amazing {
 
         // 190
         int c = 1;
-        wArray[mazeEnterColIndex][1] = c;
+        cellWasProcessed[mazeEnterColIndex][1] = true;
         c++;
 
         // 200
@@ -92,7 +92,7 @@ public class Amazing {
 
         while (target != -1) {
             switch (target) {
-                case 210: //move to next non processed col
+                case 210: //move to next already processed column
                     do {
                         if (currentCol != colCount) {
                             currentCol++;
@@ -103,16 +103,16 @@ public class Amazing {
                             currentCol = 1;
                             currentRow = 1;
                         }
-                    } while (wArray[currentCol][currentRow] == 0);
+                    } while (!cellWasProcessed[currentCol][currentRow]);
                     GOTO(270);
                     continue;
                 case 270:
-                    if (currentCol == 1 || wArray[currentCol - 1][currentRow] != 0)
+                    if (currentCol == 1 || cellWasProcessed[currentCol - 1][currentRow])
                         GOTO(600);
-                    else if (currentRow == 1 || wArray[currentCol][currentRow - 1] != 0) {
-                        if (currentCol == colCount || wArray[currentCol + 1][currentRow] != 0) {
+                    else if (currentRow == 1 || cellWasProcessed[currentCol][currentRow - 1]) {
+                        if (currentCol == colCount || cellWasProcessed[currentCol + 1][currentRow] ) {
                             if (currentRow != rowCount) {
-                                if (wArray[currentCol][currentRow + 1] != 0)
+                                if (cellWasProcessed[currentCol][currentRow + 1])
                                     OPEN(LEFT_WALL);
                                 else {
                                     openRandomWallOfCurrentCell(LEFT_WALL, BOTTOM_WALL);
@@ -124,7 +124,7 @@ public class Amazing {
                                 openRandomWallOfCurrentCell(LEFT_WALL, BOTTOM_WALL);
                             }
                         } else if (currentRow != rowCount) {
-                            if (wArray[currentCol][currentRow + 1] != 0) {
+                            if (cellWasProcessed[currentCol][currentRow + 1]) {
                                 openRandomWallOfCurrentCell(LEFT_WALL, RIGHT_WALL);
                             } else {
                                 openRandomWallOfCurrentCell(LEFT_WALL, RIGHT_WALL, BOTTOM_WALL);
@@ -136,9 +136,9 @@ public class Amazing {
                             openRandomWallOfCurrentCell(LEFT_WALL, RIGHT_WALL, BOTTOM_WALL);
                         }
                     } else {
-                        if (currentCol == colCount || wArray[currentCol + 1][currentRow] != 0) {
+                        if (currentCol == colCount || cellWasProcessed[currentCol + 1][currentRow]) {
                             if (currentRow != rowCount) {
-                                if (wArray[currentCol][currentRow + 1] != 0) {
+                                if (cellWasProcessed[currentCol][currentRow + 1] ) {
                                     openRandomWallOfCurrentCell(LEFT_WALL, TOP_WALL);
                                 } else {
                                     openRandomWallOfCurrentCell(LEFT_WALL, TOP_WALL, BOTTOM_WALL);
@@ -155,10 +155,10 @@ public class Amazing {
                     }
                     continue;
                 case 600:
-                    if (currentRow == 1 || wArray[currentCol][currentRow - 1] != 0) {
-                        if (currentCol == colCount || wArray[currentCol + 1][currentRow] != 0) {
+                    if (currentRow == 1 || cellWasProcessed[currentCol][currentRow - 1] ) {
+                        if (currentCol == colCount || cellWasProcessed[currentCol + 1][currentRow]) {
                             if (currentRow != rowCount) {
-                                if (wArray[currentCol][currentRow + 1] != 0)
+                                if (cellWasProcessed[currentCol][currentRow + 1])
                                     GOTO(210);
                                 else
                                     OPEN(BOTTOM_WALL);
@@ -169,7 +169,7 @@ public class Amazing {
                                 OPEN(BOTTOM_WALL);
                             }
                         } else if (currentRow != rowCount) {
-                            if (wArray[currentCol][currentRow + 1] != 0)
+                            if (cellWasProcessed[currentCol][currentRow + 1])
                                 OPEN(RIGHT_WALL);
                             else {
                                 openRandomWallOfCurrentCell(RIGHT_WALL, BOTTOM_WALL);
@@ -181,9 +181,9 @@ public class Amazing {
                             updateWArray = false;
                             OPEN(TOP_WALL);
                         }
-                    } else if (currentCol == colCount || wArray[currentCol + 1][currentRow] != 0) {
+                    } else if (currentCol == colCount || cellWasProcessed[currentCol + 1][currentRow]) {
                         if (currentRow != rowCount) {
-                            if (wArray[currentCol][currentRow + 1] != 0) {
+                            if (cellWasProcessed[currentCol][currentRow + 1]) {
                                 OPEN(TOP_WALL);
                             } else {
                                 openRandomWallOfCurrentCell(TOP_WALL, BOTTOM_WALL);
@@ -195,7 +195,7 @@ public class Amazing {
                             openRandomWallOfCurrentCell(TOP_WALL, BOTTOM_WALL);
                         }
                     } else if (currentRow != rowCount) {
-                        if (wArray[currentCol][currentRow + 1] != 0) {
+                        if (cellWasProcessed[currentCol][currentRow + 1]) {
                             openRandomWallOfCurrentCell(TOP_WALL, RIGHT_WALL);
                         } else {
                             openRandomWallOfCurrentCell(TOP_WALL, RIGHT_WALL, BOTTOM_WALL);
@@ -208,7 +208,7 @@ public class Amazing {
                     }
                     continue;
                 case LEFT_WALL://open left wall of current cell
-                    wArray[currentCol - 1][currentRow] = c;
+                    cellWasProcessed[currentCol - 1][currentRow] = true;
                     c++;
                     mazeCell[currentCol - 1][currentRow] = CellState.OPENED_RIGHT;
                     currentCol--;
@@ -220,11 +220,11 @@ public class Amazing {
                     }
                     continue;
                 case TOP_WALL: // open top wall of current cell and move to the cell above
-                    //'wArray[currentCol][currentRow - 1] = c;' is sytematically called before each GOTO(990) except 1 in the original version
+                    //'cellWasProcessed[currentCol][currentRow - 1] = c;' is sytematically called before each GOTO(990) except 1 in the original version
                     //'updateWArray' is introduced to keep the same behaviour even if tests still pass without it
                     if (updateWArray) {
 
-                        wArray[currentCol][currentRow - 1] = c;
+                        cellWasProcessed[currentCol][currentRow - 1] = true;
                     }
                     updateWArray = true;
                     c++;
@@ -238,7 +238,7 @@ public class Amazing {
                     }
                     continue;
                 case RIGHT_WALL: // open right wall of current cell and move to cell on the right
-                    wArray[currentCol + 1][currentRow] = c;
+                    cellWasProcessed[currentCol + 1][currentRow] = true;
                     c++;
                     openRightOfCell(mazeCell, currentCol, currentRow);
                     currentCol++;
@@ -255,7 +255,7 @@ public class Amazing {
                         if (mazeCell[currentCol][currentRow] == CellState.CLOSED_RIGHT_AND_BOTTOM) {
                             currentCol = 1;
                             currentRow = 1;
-                            if (wArray[currentCol][currentRow] == 0)
+                            if (!cellWasProcessed[currentCol][currentRow])
                                 GOTO(210);
                             else
                                 GOTO(270);
@@ -264,7 +264,7 @@ public class Amazing {
                         }
                     } else {
                         // move to cell below
-                        wArray[currentCol][currentRow + 1] = c;
+                        cellWasProcessed[currentCol][currentRow + 1] = true;
                         c++;
                         currentRow++;
                         if (isTheEnd(colCount, rowCount, c))
