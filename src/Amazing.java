@@ -55,9 +55,10 @@ public class Amazing {
             matrice[i] = new int[vertical + 1];
         }
 
+        boolean strangeBoolean= false; //boolean we don't know much about
 
-        int q = 0;
-        int z = 0;
+        boolean evenMoreStrangeBoolean = false; //boolean we don't know much about
+
 
         // 190
         int c = 1;
@@ -100,10 +101,10 @@ public class Amazing {
                                     else
                                         GOTO(1090);
                                 }
-                            } else if (z == 1)
+                            } else if (evenMoreStrangeBoolean)
                                 GOTO(940);
                             else {
-                                q = 1;
+                                strangeBoolean=true;
                                 x = rnd(2);
                                 if (x == 1)
                                     GOTO(940);
@@ -126,14 +127,14 @@ public class Amazing {
                                 else
                                     GOTO(1090);
                             }
-                        } else if (z == 1) {
+                        } else if (evenMoreStrangeBoolean) {
                             x = rnd(2);
                             if (x == 1)
                                 GOTO(940);
                             else
                                 GOTO(1020);
                         } else {
-                            q = 1;
+                            strangeBoolean=true;
                             x = rnd(3);
                             if (x == 1)
                                 GOTO(940);
@@ -163,7 +164,7 @@ public class Amazing {
                                     } else
                                         GOTO(1090);
                                 }
-                            } else if (z == 1) {
+                            } else if (evenMoreStrangeBoolean) {
                                 x = rnd(2);
                                 if (x == 1)
                                     GOTO(940);
@@ -172,7 +173,7 @@ public class Amazing {
                                     GOTO(990);
                                 }
                             } else {
-                                q = 1;
+                                strangeBoolean=true;
                                 x = rnd(3);
                                 if (x == 1)
                                     GOTO(940);
@@ -203,10 +204,10 @@ public class Amazing {
                                 else
                                     GOTO(1090);
                             } else {
-                                if (z == 1)
+                                if (evenMoreStrangeBoolean)
                                     GOTO(210);
                                 else {
-                                    q = 1;
+                                    strangeBoolean=true;
                                     GOTO(1090);
                                 }
                             }
@@ -218,10 +219,10 @@ public class Amazing {
                                     else
                                         GOTO(1090);
                                 } else {
-                                    if (z == 1)
+                                    if (evenMoreStrangeBoolean)
                                         GOTO(210);
                                     else {
-                                        q = 1;
+                                        strangeBoolean=true;
                                         GOTO(1090);
                                     }
                                 }
@@ -236,10 +237,10 @@ public class Amazing {
                                         else
                                             GOTO(1090);
                                     }
-                                } else if (z == 1)
+                                } else if (evenMoreStrangeBoolean)
                                     GOTO(1020);
                                 else {
-                                    q = 1;
+                                    strangeBoolean=true;
                                     GOTO(990);
                                 }
                             }
@@ -257,11 +258,11 @@ public class Amazing {
                                 } else
                                     GOTO(1090);
                             }
-                        } else if (z == 1) {
+                        } else if (evenMoreStrangeBoolean) {
                             wArray[r][s - 1] = c;
                             GOTO(990);
                         } else {
-                            q = 1;
+                            strangeBoolean=true;
                             x = rnd(2);
                             if (x == 1) {
                                 wArray[r][s - 1] = c;
@@ -287,7 +288,7 @@ public class Amazing {
                             else
                                 GOTO(1090);
                         }
-                    } else if (z == 1) {
+                    } else if (evenMoreStrangeBoolean) {
                         x = rnd(2);
                         if (x == 1) {
                             wArray[r][s - 1] = c;
@@ -295,7 +296,7 @@ public class Amazing {
                         } else
                             GOTO(1020);
                     } else {
-                        q = 1;
+                        strangeBoolean=true;
                         x = rnd(3);
                         if (x == 1) {
                             wArray[r][s - 1] = c;
@@ -314,7 +315,7 @@ public class Amazing {
                     if (c == horizontal * vertical + 1)
                         GOTO(1200);
                     else {
-                        q = 0;
+                        strangeBoolean=false;
                         GOTO(270);
                     }
                     continue;
@@ -325,7 +326,7 @@ public class Amazing {
                     if (c == horizontal * vertical + 1)
                         GOTO(1200);
                     else {
-                        q = 0;
+                        strangeBoolean=false;
                         GOTO(270);
                     }
                     continue;
@@ -346,11 +347,11 @@ public class Amazing {
                         GOTO(600);
                     continue;
                 case 1090:
-                    if (q == 1) {
-                        z = 1;
+                    if (strangeBoolean) {
+                        evenMoreStrangeBoolean=true;
                         if (isClosedBottomRight(matrice[r][s])) {
                             matrice[r][s] = 1;
-                            q = 0;
+                            strangeBoolean=false;
                             r = 1;
                             s = 1;
                             if (wArray[r][s] == 0)
@@ -359,7 +360,7 @@ public class Amazing {
                                 GOTO(270);
                         } else {
                             matrice[r][s] = 3;
-                            q = 0;
+                            strangeBoolean=false;
                             GOTO(210);
                         }
                     } else {
