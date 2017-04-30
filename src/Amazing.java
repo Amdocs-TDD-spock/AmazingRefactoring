@@ -52,7 +52,15 @@ public class Amazing {
     }
 
     public static void openRandomWallOfCurrentCell(int... possibleWays) {
-        GOTO(possibleWays[rnd(possibleWays.length) - 1]);
+        if (possibleWays.length == 1) {
+            // we have to write a specific case when only one way is available even if the code in the 'else' statement
+            // also works when array length is 1. This is because the tests are based on random sequences order and if
+            // we call method 'rnd' when array length is 1 then tests result will change because in the original code
+            // 'rnd' was called only when there is more than one possible way.
+            GOTO(possibleWays[0]);
+        } else {
+            GOTO(possibleWays[rnd(possibleWays.length) - 1]);
+        }
     }
 
     public static void doit(int colCount, int rowCount) {
@@ -114,12 +122,12 @@ public class Amazing {
                         if (currentCol == colCount || cellAtRightWasProcessed()) {
                             if (currentRow != rowCount) {
                                 if (cellBelowWasProcessed()) // we cannot go down because another wall of the cell below is open
-                                    OPEN(LEFT_WALL);
+                                    openRandomWallOfCurrentCell(LEFT_WALL);
                                 else {
                                     openRandomWallOfCurrentCell(LEFT_WALL, BOTTOM_WALL);
                                 }
                             } else if (mazeExitIsDefined)
-                                OPEN(LEFT_WALL);
+                                openRandomWallOfCurrentCell(LEFT_WALL);
                             else {
                                 openRandomWallOfCurrentCell(LEFT_WALL, BOTTOM_WALL);
                             }
@@ -159,33 +167,33 @@ public class Amazing {
                                 if (cellBelowWasProcessed())
                                     GOTO(210);
                                 else
-                                    OPEN(BOTTOM_WALL);
+                                    openRandomWallOfCurrentCell(BOTTOM_WALL);
                             } else if (mazeExitIsDefined)
                                 GOTO(210);
                             else {
-                                OPEN(BOTTOM_WALL);
+                                openRandomWallOfCurrentCell(BOTTOM_WALL);
                             }
                         } else if (currentRow != rowCount) {
                             if (cellBelowWasProcessed())
-                                OPEN(RIGHT_WALL);
+                                openRandomWallOfCurrentCell(RIGHT_WALL);
                             else {
                                 openRandomWallOfCurrentCell(RIGHT_WALL, BOTTOM_WALL);
                             }
                         } else if (mazeExitIsDefined)
-                            OPEN(RIGHT_WALL);
+                            openRandomWallOfCurrentCell(RIGHT_WALL);
                         else {
                             updateWArray = false;
-                            OPEN(TOP_WALL);
+                            openRandomWallOfCurrentCell(TOP_WALL);
                         }
                     } else if (currentCol == colCount || cellAtRightWasProcessed()) {
                         if (currentRow != rowCount) {
                             if (cellBelowWasProcessed()) {
-                                OPEN(TOP_WALL);
+                                openRandomWallOfCurrentCell(TOP_WALL);
                             } else {
                                 openRandomWallOfCurrentCell(TOP_WALL, BOTTOM_WALL);
                             }
                         } else if (mazeExitIsDefined) {
-                            OPEN(TOP_WALL);
+                            openRandomWallOfCurrentCell(TOP_WALL);
                         } else {
                             openRandomWallOfCurrentCell(TOP_WALL, BOTTOM_WALL);
                         }
@@ -240,7 +248,6 @@ public class Amazing {
                         GOTO(600);
                     continue;
                 case BOTTOM_WALL: // open bottom wall of current cell
-
                     if (currentRow == rowCount) {
                         mazeExitIsDefined = true;
                         if (mazeCell[currentCol][currentRow] == CellState.CLOSED_RIGHT_AND_BOTTOM) {
