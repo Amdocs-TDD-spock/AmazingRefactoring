@@ -8,7 +8,6 @@
  */
 
 
-import java.util.Arrays;
 import java.util.Random;
 
 public class Amazing {
@@ -77,33 +76,33 @@ public class Amazing {
         c++;
 
         // 200
-        int r = mazeEnterColIndex;
-        int s = 1;
+        int currentCol = mazeEnterColIndex;
+        int currentRow = 1;
         GOTO(270);
 
         while (target != -1) {
             switch (target) {
                 case 210:
                     do {
-                        if (r != colCount) {
-                            r++;
-                        } else if (s != rowCount) {
-                            r = 1;
-                            s++;
+                        if (currentCol != colCount) {
+                            currentCol++;
+                        } else if (currentRow != rowCount) {
+                            currentCol = 1;
+                            currentRow++;
                         } else {
-                            r = 1;
-                            s = 1;
+                            currentCol = 1;
+                            currentRow = 1;
                         }
-                    } while (wArray[r][s] == 0);
+                    } while (wArray[currentCol][currentRow] == 0);
                     GOTO(270);
                     continue;
                 case 270:
-                    if (r - 1 == 0 || wArray[r - 1][s] != 0)
+                    if (currentCol == 1 || wArray[currentCol - 1][currentRow] != 0)
                         GOTO(600);
-                    else if (s - 1 == 0 || wArray[r][s - 1] != 0) {
-                        if (r == colCount || wArray[r + 1][s] != 0) {
-                            if (s != rowCount) {
-                                if (wArray[r][s + 1] != 0)
+                    else if (currentRow == 1 || wArray[currentCol][currentRow - 1] != 0) {
+                        if (currentCol == colCount || wArray[currentCol + 1][currentRow] != 0) {
+                            if (currentRow != rowCount) {
+                                if (wArray[currentCol][currentRow + 1] != 0)
                                     GOTO(940);
                                 else {
                                     goRandomlyTo(940, 1090);
@@ -114,8 +113,8 @@ public class Amazing {
                                 strangeBoolean = true;
                                 goRandomlyTo(940, 1090);
                             }
-                        } else if (s != rowCount) {
-                            if (wArray[r][s + 1] != 0) {
+                        } else if (currentRow != rowCount) {
+                            if (wArray[currentCol][currentRow + 1] != 0) {
                                 goRandomlyTo(940, 1020);
                             } else {
                                 goRandomlyTo(940, 1020, 1090);
@@ -127,9 +126,9 @@ public class Amazing {
                             goRandomlyTo(940, 1020, 1090);
                         }
                     } else {
-                        if (r == colCount || wArray[r + 1][s] != 0) {
-                            if (s != rowCount) {
-                                if (wArray[r][s + 1] != 0) {
+                        if (currentCol == colCount || wArray[currentCol + 1][currentRow] != 0) {
+                            if (currentRow != rowCount) {
+                                if (wArray[currentCol][currentRow + 1] != 0) {
                                     goRandomlyTo(940, 990);
                                 } else {
                                     goRandomlyTo(940, 990, 1090);
@@ -146,10 +145,10 @@ public class Amazing {
                     }
                     continue;
                 case 600:
-                    if (s - 1 == 0 || wArray[r][s - 1] != 0) {
-                        if (r == colCount || wArray[r + 1][s] != 0) {
-                            if (s != rowCount) {
-                                if (wArray[r][s + 1] != 0)
+                    if (currentRow == 1 || wArray[currentCol][currentRow - 1] != 0) {
+                        if (currentCol == colCount || wArray[currentCol + 1][currentRow] != 0) {
+                            if (currentRow != rowCount) {
+                                if (wArray[currentCol][currentRow + 1] != 0)
                                     GOTO(210);
                                 else
                                     GOTO(1090);
@@ -161,8 +160,8 @@ public class Amazing {
                                     GOTO(1090);
                                 }
                             }
-                        } else if (s != rowCount) {
-                            if (wArray[r][s + 1] != 0)
+                        } else if (currentRow != rowCount) {
+                            if (wArray[currentCol][currentRow + 1] != 0)
                                 GOTO(1020);
                             else {
                                 goRandomlyTo(1020, 1090);
@@ -174,9 +173,9 @@ public class Amazing {
                             updateWArray = false;
                             GOTO(990);
                         }
-                    } else if (r == colCount || wArray[r + 1][s] != 0) {
-                        if (s != rowCount) {
-                            if (wArray[r][s + 1] != 0) {
+                    } else if (currentCol == colCount || wArray[currentCol + 1][currentRow] != 0) {
+                        if (currentRow != rowCount) {
+                            if (wArray[currentCol][currentRow + 1] != 0) {
                                 GOTO(990);
                             } else {
                                 goRandomlyTo(990, 1090);
@@ -187,8 +186,8 @@ public class Amazing {
                             strangeBoolean = true;
                             goRandomlyTo(990, 1090);
                         }
-                    } else if (s != rowCount) {
-                        if (wArray[r][s + 1] != 0) {
+                    } else if (currentRow != rowCount) {
+                        if (wArray[currentCol][currentRow + 1] != 0) {
                             goRandomlyTo(990, 1020);
                         } else {
                             goRandomlyTo(990, 1020, 1090);
@@ -201,11 +200,11 @@ public class Amazing {
                     }
                     continue;
                 case 940:
-                    wArray[r - 1][s] = c;
+                    wArray[currentCol - 1][currentRow] = c;
                     c++;
-                    mazeCell[r - 1][s] = CellState.OPENED_RIGHT;
-                    r--;
-                    if (c == colCount * rowCount + 1)
+                    mazeCell[currentCol - 1][currentRow] = CellState.OPENED_RIGHT;
+                    currentCol--;
+                    if (isTheEnd(rowCount, colCount, c))
                         GOTO(1200);
                     else {
                         strangeBoolean = false;
@@ -213,17 +212,17 @@ public class Amazing {
                     }
                     continue;
                 case 990:
-                    //'wArray[r][s - 1] = c;' is sytematically called before each GOTO(990) except 1 in the original version
+                    //'wArray[currentCol][currentRow - 1] = c;' is sytematically called before each GOTO(990) except 1 in the original version
                     //'updateWArray' is introduced to keep the same behaviour even if tests still pass without it
                     if (updateWArray) {
 
-                        wArray[r][s - 1] = c;
+                        wArray[currentCol][currentRow - 1] = c;
                     }
                     updateWArray = true;
                     c++;
-                    mazeCell[r][s - 1] = CellState.OPENED_BOTTOM;
-                    s--;
-                    if (c == colCount * rowCount + 1)
+                    mazeCell[currentCol][currentRow - 1] = CellState.OPENED_BOTTOM;
+                    currentRow--;
+                    if (isTheEnd(rowCount, colCount, c))
                         GOTO(1200);
                     else {
                         strangeBoolean = false;
@@ -231,17 +230,15 @@ public class Amazing {
                     }
                     continue;
                 case 1020:
-                    wArray[r + 1][s] = c;
+                    wArray[currentCol + 1][currentRow] = c;
                     c++;
-                    if (mazeCell[r][s]==CellState.CLOSED_RIGHT_AND_BOTTOM) {
-                        mazeCell[r][s] = CellState.OPENED_RIGHT;
-                        r++;
+                    if (mazeCell[currentCol][currentRow]==CellState.CLOSED_RIGHT_AND_BOTTOM) {
+                        mazeCell[currentCol][currentRow] = CellState.OPENED_RIGHT;
                     } else {
-                        mazeCell[r][s] = CellState.OPENED_RIGHT_AND_BOTTOM;
-                        r++;
-
+                        mazeCell[currentCol][currentRow] = CellState.OPENED_RIGHT_AND_BOTTOM;
                     }
-                    if (c == colCount * rowCount + 1)
+                    currentCol++;
+                    if (isTheEnd(rowCount, colCount, c))
                         GOTO(1200);
                     else
                         GOTO(600);
@@ -249,30 +246,30 @@ public class Amazing {
                 case 1090:
                     if (strangeBoolean) {
                         evenMoreStrangeBoolean = true;
-                        if (mazeCell[r][s]==CellState.CLOSED_RIGHT_AND_BOTTOM) {
-                            mazeCell[r][s] = CellState.OPENED_BOTTOM;
+                        if (mazeCell[currentCol][currentRow]==CellState.CLOSED_RIGHT_AND_BOTTOM) {
+                            mazeCell[currentCol][currentRow] = CellState.OPENED_BOTTOM;
                             strangeBoolean = false;
-                            r = 1;
-                            s = 1;
-                            if (wArray[r][s] == 0)
+                            currentCol = 1;
+                            currentRow = 1;
+                            if (wArray[currentCol][currentRow] == 0)
                                 GOTO(210);
                             else
                                 GOTO(270);
                         } else {
-                            mazeCell[r][s] = CellState.OPENED_RIGHT_AND_BOTTOM;
+                            mazeCell[currentCol][currentRow] = CellState.OPENED_RIGHT_AND_BOTTOM;
                             strangeBoolean = false;
                             GOTO(210);
                         }
                     } else {
-                        wArray[r][s + 1] = c;
+                        wArray[currentCol][currentRow + 1] = c;
                         c++;
-                        if (mazeCell[r][s]==CellState.CLOSED_RIGHT_AND_BOTTOM) {
-                            mazeCell[r][s] = CellState.OPENED_BOTTOM;
+                        if (mazeCell[currentCol][currentRow]==CellState.CLOSED_RIGHT_AND_BOTTOM) {
+                            mazeCell[currentCol][currentRow] = CellState.OPENED_BOTTOM;
                         } else {
-                            mazeCell[r][s] = CellState.OPENED_RIGHT_AND_BOTTOM;
+                            mazeCell[currentCol][currentRow] = CellState.OPENED_RIGHT_AND_BOTTOM;
                         }
-                        s++;
-                        if (c == rowCount * colCount + 1)
+                        currentRow++;
+                        if (isTheEnd(colCount, rowCount, c))
                             GOTO(1200);
                         else
                             GOTO(270);
@@ -288,6 +285,10 @@ public class Amazing {
         display(colCount, rowCount, mazeCell);
 
 
+    }
+
+    private static boolean isTheEnd(int colCount, int rowCount, int c) {
+        return c == rowCount * colCount + 1;
     }
 
     private static void initMaze() {
