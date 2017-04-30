@@ -19,6 +19,11 @@ public class Amazing {
     public static Random random = new Random(0);
     static int target = 0;      // where GOTO goes
     static StringBuffer result = new StringBuffer();
+    // maintains which cells have been processed at least once until now
+    private static boolean[][] cellWasProcessed;
+
+    private static int currentCol;
+    private static int currentRow;
 
     private static void println() {
         result.append("\n");
@@ -42,11 +47,9 @@ public class Amazing {
         target = lineno;
     }
 
-
     public static void OPEN(int lineno) {
         GOTO(lineno);
     }
-
 
     public static void openRandomWallOfCurrentCell(int... possibleWays) {
         GOTO(possibleWays[rnd(possibleWays.length) - 1]);
@@ -62,7 +65,7 @@ public class Amazing {
         displayFirstLine(colCount, mazeEnterColIndex);
 
         // maintains which cells have been processed at least once until now
-        boolean[][] cellWasProcessed = new boolean[colCount + 1][rowCount + 1];
+        cellWasProcessed = new boolean[colCount + 1][rowCount + 1];
         CellState[][] mazeCell = new CellState[colCount + 1][rowCount + 1];
 
         for (int i = 0; i <= colCount; i++) {
@@ -86,8 +89,8 @@ public class Amazing {
         c++;
 
         // 200
-        int currentCol = mazeEnterColIndex;
-        int currentRow = 1;
+        currentCol = mazeEnterColIndex;
+        currentRow = 1;
         GOTO(270);
 
         while (target != -1) {
@@ -107,12 +110,12 @@ public class Amazing {
                     GOTO(270);
                     continue;
                 case 270:
-                    if (currentCol == 1 || cellWasProcessed[currentCol - 1][currentRow])
+                    if (currentCol == 1 || cellAtLeftWasProcessed())
                         GOTO(600);
-                    else if (currentRow == 1 || cellWasProcessed[currentCol][currentRow - 1]) {
-                        if (currentCol == colCount || cellWasProcessed[currentCol + 1][currentRow] ) {
+                    else if (currentRow == 1 || cellAboveWasProcessed()) {
+                        if (currentCol == colCount || cellAtRightWasProcessed()) {
                             if (currentRow != rowCount) {
-                                if (cellWasProcessed[currentCol][currentRow + 1])
+                                if (cellBelowWasProcessed())
                                     OPEN(LEFT_WALL);
                                 else {
                                     openRandomWallOfCurrentCell(LEFT_WALL, BOTTOM_WALL);
@@ -124,7 +127,7 @@ public class Amazing {
                                 openRandomWallOfCurrentCell(LEFT_WALL, BOTTOM_WALL);
                             }
                         } else if (currentRow != rowCount) {
-                            if (cellWasProcessed[currentCol][currentRow + 1]) {
+                            if (cellBelowWasProcessed()) {
                                 openRandomWallOfCurrentCell(LEFT_WALL, RIGHT_WALL);
                             } else {
                                 openRandomWallOfCurrentCell(LEFT_WALL, RIGHT_WALL, BOTTOM_WALL);
@@ -136,9 +139,9 @@ public class Amazing {
                             openRandomWallOfCurrentCell(LEFT_WALL, RIGHT_WALL, BOTTOM_WALL);
                         }
                     } else {
-                        if (currentCol == colCount || cellWasProcessed[currentCol + 1][currentRow]) {
+                        if (currentCol == colCount || cellAtRightWasProcessed()) {
                             if (currentRow != rowCount) {
-                                if (cellWasProcessed[currentCol][currentRow + 1] ) {
+                                if (cellBelowWasProcessed()) {
                                     openRandomWallOfCurrentCell(LEFT_WALL, TOP_WALL);
                                 } else {
                                     openRandomWallOfCurrentCell(LEFT_WALL, TOP_WALL, BOTTOM_WALL);
@@ -155,10 +158,10 @@ public class Amazing {
                     }
                     continue;
                 case 600:
-                    if (currentRow == 1 || cellWasProcessed[currentCol][currentRow - 1] ) {
-                        if (currentCol == colCount || cellWasProcessed[currentCol + 1][currentRow]) {
+                    if (currentRow == 1 || cellAboveWasProcessed()) {
+                        if (currentCol == colCount || cellAtRightWasProcessed()) {
                             if (currentRow != rowCount) {
-                                if (cellWasProcessed[currentCol][currentRow + 1])
+                                if (cellBelowWasProcessed())
                                     GOTO(210);
                                 else
                                     OPEN(BOTTOM_WALL);
@@ -169,7 +172,7 @@ public class Amazing {
                                 OPEN(BOTTOM_WALL);
                             }
                         } else if (currentRow != rowCount) {
-                            if (cellWasProcessed[currentCol][currentRow + 1])
+                            if (cellBelowWasProcessed())
                                 OPEN(RIGHT_WALL);
                             else {
                                 openRandomWallOfCurrentCell(RIGHT_WALL, BOTTOM_WALL);
@@ -181,9 +184,9 @@ public class Amazing {
                             updateWArray = false;
                             OPEN(TOP_WALL);
                         }
-                    } else if (currentCol == colCount || cellWasProcessed[currentCol + 1][currentRow]) {
+                    } else if (currentCol == colCount || cellAtRightWasProcessed()) {
                         if (currentRow != rowCount) {
-                            if (cellWasProcessed[currentCol][currentRow + 1]) {
+                            if (cellBelowWasProcessed()) {
                                 OPEN(TOP_WALL);
                             } else {
                                 openRandomWallOfCurrentCell(TOP_WALL, BOTTOM_WALL);
@@ -195,7 +198,7 @@ public class Amazing {
                             openRandomWallOfCurrentCell(TOP_WALL, BOTTOM_WALL);
                         }
                     } else if (currentRow != rowCount) {
-                        if (cellWasProcessed[currentCol][currentRow + 1]) {
+                        if (cellBelowWasProcessed()) {
                             openRandomWallOfCurrentCell(TOP_WALL, RIGHT_WALL);
                         } else {
                             openRandomWallOfCurrentCell(TOP_WALL, RIGHT_WALL, BOTTOM_WALL);
@@ -248,6 +251,7 @@ public class Amazing {
                         GOTO(600);
                     continue;
                 case BOTTOM_WALL: // open bottom wall of current cell
+
                     if (strangeBoolean) {
                         evenMoreStrangeBoolean = true;
                         strangeBoolean = false;
@@ -284,6 +288,22 @@ public class Amazing {
         display(colCount, rowCount, mazeCell);
 
 
+    }
+
+    private static boolean cellAtLeftWasProcessed() {
+        return cellWasProcessed[currentCol - 1][currentRow];
+    }
+
+    private static boolean cellBelowWasProcessed() {
+        return cellWasProcessed[currentCol][currentRow + 1];
+    }
+
+    private static boolean cellAtRightWasProcessed() {
+        return cellWasProcessed[currentCol + 1][currentRow];
+    }
+
+    private static boolean cellAboveWasProcessed() {
+        return cellWasProcessed[currentCol][currentRow - 1];
     }
 
     /**
