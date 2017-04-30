@@ -7,6 +7,8 @@
  * + This transliteration to Java was created by Bill Wake, William.Wake@acm.org
  */
 
+
+import java.util.Arrays;
 import java.util.Random;
 
 public class Amazing {
@@ -52,11 +54,14 @@ public class Amazing {
 
         // Way array ?
         int[][] wArray = new int[colCount + 1][rowCount + 1];
-        int[][] mazeCell = new int[colCount + 1][rowCount + 1];
+        CellState[][] mazeCell = new CellState[colCount + 1][rowCount + 1];
 
         for (int i = 0; i <= colCount; i++) {
             wArray[i] = new int[rowCount + 1];
-            mazeCell[i] = new int[rowCount + 1];
+            mazeCell[i] = new CellState[rowCount + 1];
+            for (int j=0; j<= rowCount;j++) {
+                mazeCell[i][j]=CellState.CLOSED_RIGHT_AND_BOTTOM;
+            }
         }
 
         boolean strangeBoolean = false; //boolean we don't know much about
@@ -198,7 +203,7 @@ public class Amazing {
                 case 940:
                     wArray[r - 1][s] = c;
                     c++;
-                    mazeCell[r - 1][s] = 2;
+                    mazeCell[r - 1][s] = CellState.OPENED_RIGHT;
                     r--;
                     if (c == colCount * rowCount + 1)
                         GOTO(1200);
@@ -216,7 +221,7 @@ public class Amazing {
                     }
                     updateWArray = true;
                     c++;
-                    mazeCell[r][s - 1] = 1;
+                    mazeCell[r][s - 1] = CellState.OPENED_BOTTOM;
                     s--;
                     if (c == colCount * rowCount + 1)
                         GOTO(1200);
@@ -228,11 +233,11 @@ public class Amazing {
                 case 1020:
                     wArray[r + 1][s] = c;
                     c++;
-                    if (isClosedBottomRight(mazeCell[r][s])) {
-                        mazeCell[r][s] = 2;
+                    if (mazeCell[r][s]==CellState.CLOSED_RIGHT_AND_BOTTOM) {
+                        mazeCell[r][s] = CellState.OPENED_RIGHT;
                         r++;
                     } else {
-                        mazeCell[r][s] = 3;
+                        mazeCell[r][s] = CellState.OPENED_RIGHT_AND_BOTTOM;
                         r++;
 
                     }
@@ -244,8 +249,8 @@ public class Amazing {
                 case 1090:
                     if (strangeBoolean) {
                         evenMoreStrangeBoolean = true;
-                        if (isClosedBottomRight(mazeCell[r][s])) {
-                            mazeCell[r][s] = 1;
+                        if (mazeCell[r][s]==CellState.CLOSED_RIGHT_AND_BOTTOM) {
+                            mazeCell[r][s] = CellState.OPENED_BOTTOM;
                             strangeBoolean = false;
                             r = 1;
                             s = 1;
@@ -254,17 +259,17 @@ public class Amazing {
                             else
                                 GOTO(270);
                         } else {
-                            mazeCell[r][s] = 3;
+                            mazeCell[r][s] = CellState.OPENED_RIGHT_AND_BOTTOM;
                             strangeBoolean = false;
                             GOTO(210);
                         }
                     } else {
                         wArray[r][s + 1] = c;
                         c++;
-                        if (isClosedBottomRight(mazeCell[r][s])) {
-                            mazeCell[r][s] = 1;
+                        if (mazeCell[r][s]==CellState.CLOSED_RIGHT_AND_BOTTOM) {
+                            mazeCell[r][s] = CellState.OPENED_BOTTOM;
                         } else {
-                            mazeCell[r][s] = 3;
+                            mazeCell[r][s] = CellState.OPENED_RIGHT_AND_BOTTOM;
                         }
                         s++;
                         if (c == rowCount * colCount + 1)
@@ -283,10 +288,6 @@ public class Amazing {
         display(colCount, rowCount, mazeCell);
 
 
-    }
-
-    private static boolean isClosedBottomRight(int i) {
-        return i == 0;
     }
 
     private static void initMaze() {
@@ -308,36 +309,56 @@ public class Amazing {
         println();
     }
 
-    private static void display(int colCount, int rowCount, int[][] maze) {
+    private static void display(int colCount, int rowCount, CellState[][] maze) {
 
         for (int j = 1; j <= rowCount; j++) {
             print("I");
 
             for (int i = 1; i <= colCount; i++) {
-                if (maze[i][j] >= 2)
-                    print("   ");
-                else
-                    print("  I");
+                maze[i][j].printFirstLine();
             }
 
             print(" ");
             println();
 
             for (int i = 1; i <= colCount; i++) {
-                if (isClosedBottomRight(maze[i][j]) || isClosedBottom(maze[i][j]))
-                    print(":--");
-                else
-                    print(":  ");
+                maze[i][j].printSecondLine();
             }
 
             print(":");    // 1360
             println();
         }
+
     }
 
+    private enum CellState {
+        CLOSED_RIGHT_AND_BOTTOM(0,"  I",":--"),
+        OPENED_BOTTOM(1,"  I",":  "),
+        OPENED_RIGHT(2,"   ",":--"),
+        OPENED_RIGHT_AND_BOTTOM(3,"   ",":  ");
 
+        private int value;
+        private String firstLineRepresentation;
+        private String secondLineRepresentation;
 
-    private static boolean isClosedBottom(int i) {
-        return i == 2;
+        CellState(int value,String firstLineRepresentation, String secondLineRepresentation) {
+
+            this.value = value;
+            this.firstLineRepresentation = firstLineRepresentation;
+            this.secondLineRepresentation = secondLineRepresentation;
+        }
+
+        public int getValue() {
+            return value;
+        }
+
+        public void printFirstLine() {
+            print(firstLineRepresentation);
+        }
+        public void printSecondLine() {
+            print(secondLineRepresentation);
+        }
+
     }
+
 }
