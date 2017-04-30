@@ -232,11 +232,7 @@ public class Amazing {
                 case 1020:
                     wArray[currentCol + 1][currentRow] = c;
                     c++;
-                    if (mazeCell[currentCol][currentRow]==CellState.CLOSED_RIGHT_AND_BOTTOM) {
-                        mazeCell[currentCol][currentRow] = CellState.OPENED_RIGHT;
-                    } else {
-                        mazeCell[currentCol][currentRow] = CellState.OPENED_RIGHT_AND_BOTTOM;
-                    }
+                    openRightOfCell(mazeCell,currentCol,currentRow);
                     currentCol++;
                     if (isTheEnd(rowCount, colCount, c))
                         GOTO(1200);
@@ -246,8 +242,8 @@ public class Amazing {
                 case 1090:
                     if (strangeBoolean) {
                         evenMoreStrangeBoolean = true;
+                        openBottomOfCell(mazeCell,currentCol,currentRow);
                         if (mazeCell[currentCol][currentRow]==CellState.CLOSED_RIGHT_AND_BOTTOM) {
-                            mazeCell[currentCol][currentRow] = CellState.OPENED_BOTTOM;
                             strangeBoolean = false;
                             currentCol = 1;
                             currentRow = 1;
@@ -256,18 +252,13 @@ public class Amazing {
                             else
                                 GOTO(270);
                         } else {
-                            mazeCell[currentCol][currentRow] = CellState.OPENED_RIGHT_AND_BOTTOM;
                             strangeBoolean = false;
                             GOTO(210);
                         }
                     } else {
                         wArray[currentCol][currentRow + 1] = c;
                         c++;
-                        if (mazeCell[currentCol][currentRow]==CellState.CLOSED_RIGHT_AND_BOTTOM) {
-                            mazeCell[currentCol][currentRow] = CellState.OPENED_BOTTOM;
-                        } else {
-                            mazeCell[currentCol][currentRow] = CellState.OPENED_RIGHT_AND_BOTTOM;
-                        }
+                        openBottomOfCell(mazeCell,currentCol,currentRow);
                         currentRow++;
                         if (isTheEnd(colCount, rowCount, c))
                             GOTO(1200);
@@ -285,6 +276,30 @@ public class Amazing {
         display(colCount, rowCount, mazeCell);
 
 
+    }
+
+    /**
+     * Opens the right wall of the cell at the given position
+     * @param cellState
+     */
+    private static void openRightOfCell(CellState[][] mazeCell, int currentCol, int currentRow) {
+        if (mazeCell[currentCol][currentRow]==CellState.CLOSED_RIGHT_AND_BOTTOM) {
+            mazeCell[currentCol][currentRow] = CellState.OPENED_RIGHT;
+        } else {
+            mazeCell[currentCol][currentRow] = CellState.OPENED_RIGHT_AND_BOTTOM;
+        }
+    }
+
+    /**
+     * Opens the bottom wall of the cell at the given position
+     * @param cellState
+     */
+    private static void openBottomOfCell(CellState[][] maze, int colIndex,int rowIndex) {
+        if (maze[colIndex][rowIndex]==CellState.CLOSED_RIGHT_AND_BOTTOM) {
+            maze[colIndex][rowIndex] = CellState.OPENED_BOTTOM;
+        } else {
+            maze[colIndex][rowIndex] = CellState.OPENED_RIGHT_AND_BOTTOM;
+        }
     }
 
     private static boolean isTheEnd(int colCount, int rowCount, int c) {
