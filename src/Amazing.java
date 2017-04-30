@@ -41,22 +41,22 @@ public class Amazing {
         GOTO(possibleWays[rnd(possibleWays.length) - 1]);
     }
 
-    public static void doit(int horizontal, int vertical) {
+    public static void doit(int colCount, int rowCount) {
         initMaze();
 
-        int x = rnd(horizontal);
+        int mazeEnterColIndex = rnd(colCount);
 
-        if (horizontal == 1 || vertical == 1) return;
+        if (colCount == 1 || rowCount == 1) return;
 
-        displayFirstLine(horizontal, x);
+        displayFirstLine(colCount, mazeEnterColIndex);
 
         // Way array ?
-        int[][] wArray = new int[horizontal + 1][vertical + 1];
-        int[][] matrice = new int[horizontal + 1][vertical + 1];
+        int[][] wArray = new int[colCount + 1][rowCount + 1];
+        int[][] mazeCell = new int[colCount + 1][rowCount + 1];
 
-        for (int i = 0; i <= horizontal; i++) {
-            wArray[i] = new int[vertical + 1];
-            matrice[i] = new int[vertical + 1];
+        for (int i = 0; i <= colCount; i++) {
+            wArray[i] = new int[rowCount + 1];
+            mazeCell[i] = new int[rowCount + 1];
         }
 
         boolean strangeBoolean = false; //boolean we don't know much about
@@ -68,11 +68,11 @@ public class Amazing {
 
         // 190
         int c = 1;
-        wArray[x][1] = c;
+        wArray[mazeEnterColIndex][1] = c;
         c++;
 
         // 200
-        int r = x;
+        int r = mazeEnterColIndex;
         int s = 1;
         GOTO(270);
 
@@ -80,9 +80,9 @@ public class Amazing {
             switch (target) {
                 case 210:
                     do {
-                        if (r != horizontal) {
+                        if (r != colCount) {
                             r++;
-                        } else if (s != vertical) {
+                        } else if (s != rowCount) {
                             r = 1;
                             s++;
                         } else {
@@ -96,8 +96,8 @@ public class Amazing {
                     if (r - 1 == 0 || wArray[r - 1][s] != 0)
                         GOTO(600);
                     else if (s - 1 == 0 || wArray[r][s - 1] != 0) {
-                        if (r == horizontal || wArray[r + 1][s] != 0) {
-                            if (s != vertical) {
+                        if (r == colCount || wArray[r + 1][s] != 0) {
+                            if (s != rowCount) {
                                 if (wArray[r][s + 1] != 0)
                                     GOTO(940);
                                 else {
@@ -109,7 +109,7 @@ public class Amazing {
                                 strangeBoolean = true;
                                 goRandomlyTo(940, 1090);
                             }
-                        } else if (s != vertical) {
+                        } else if (s != rowCount) {
                             if (wArray[r][s + 1] != 0) {
                                 goRandomlyTo(940, 1020);
                             } else {
@@ -122,8 +122,8 @@ public class Amazing {
                             goRandomlyTo(940, 1020, 1090);
                         }
                     } else {
-                        if (r == horizontal || wArray[r + 1][s] != 0) {
-                            if (s != vertical) {
+                        if (r == colCount || wArray[r + 1][s] != 0) {
+                            if (s != rowCount) {
                                 if (wArray[r][s + 1] != 0) {
                                     goRandomlyTo(940, 990);
                                 } else {
@@ -142,8 +142,8 @@ public class Amazing {
                     continue;
                 case 600:
                     if (s - 1 == 0 || wArray[r][s - 1] != 0) {
-                        if (r == horizontal || wArray[r + 1][s] != 0) {
-                            if (s != vertical) {
+                        if (r == colCount || wArray[r + 1][s] != 0) {
+                            if (s != rowCount) {
                                 if (wArray[r][s + 1] != 0)
                                     GOTO(210);
                                 else
@@ -156,7 +156,7 @@ public class Amazing {
                                     GOTO(1090);
                                 }
                             }
-                        } else if (s != vertical) {
+                        } else if (s != rowCount) {
                             if (wArray[r][s + 1] != 0)
                                 GOTO(1020);
                             else {
@@ -169,8 +169,8 @@ public class Amazing {
                             updateWArray = false;
                             GOTO(990);
                         }
-                    } else if (r == horizontal || wArray[r + 1][s] != 0) {
-                        if (s != vertical) {
+                    } else if (r == colCount || wArray[r + 1][s] != 0) {
+                        if (s != rowCount) {
                             if (wArray[r][s + 1] != 0) {
                                 GOTO(990);
                             } else {
@@ -182,7 +182,7 @@ public class Amazing {
                             strangeBoolean = true;
                             goRandomlyTo(990, 1090);
                         }
-                    } else if (s != vertical) {
+                    } else if (s != rowCount) {
                         if (wArray[r][s + 1] != 0) {
                             goRandomlyTo(990, 1020);
                         } else {
@@ -198,9 +198,9 @@ public class Amazing {
                 case 940:
                     wArray[r - 1][s] = c;
                     c++;
-                    matrice[r - 1][s] = 2;
+                    mazeCell[r - 1][s] = 2;
                     r--;
-                    if (c == horizontal * vertical + 1)
+                    if (c == colCount * rowCount + 1)
                         GOTO(1200);
                     else {
                         strangeBoolean = false;
@@ -216,9 +216,9 @@ public class Amazing {
                     }
                     updateWArray = true;
                     c++;
-                    matrice[r][s - 1] = 1;
+                    mazeCell[r][s - 1] = 1;
                     s--;
-                    if (c == horizontal * vertical + 1)
+                    if (c == colCount * rowCount + 1)
                         GOTO(1200);
                     else {
                         strangeBoolean = false;
@@ -228,15 +228,15 @@ public class Amazing {
                 case 1020:
                     wArray[r + 1][s] = c;
                     c++;
-                    if (isClosedBottomRight(matrice[r][s])) {
-                        matrice[r][s] = 2;
+                    if (isClosedBottomRight(mazeCell[r][s])) {
+                        mazeCell[r][s] = 2;
                         r++;
                     } else {
-                        matrice[r][s] = 3;
+                        mazeCell[r][s] = 3;
                         r++;
 
                     }
-                    if (c == horizontal * vertical + 1)
+                    if (c == colCount * rowCount + 1)
                         GOTO(1200);
                     else
                         GOTO(600);
@@ -244,8 +244,8 @@ public class Amazing {
                 case 1090:
                     if (strangeBoolean) {
                         evenMoreStrangeBoolean = true;
-                        if (isClosedBottomRight(matrice[r][s])) {
-                            matrice[r][s] = 1;
+                        if (isClosedBottomRight(mazeCell[r][s])) {
+                            mazeCell[r][s] = 1;
                             strangeBoolean = false;
                             r = 1;
                             s = 1;
@@ -254,20 +254,20 @@ public class Amazing {
                             else
                                 GOTO(270);
                         } else {
-                            matrice[r][s] = 3;
+                            mazeCell[r][s] = 3;
                             strangeBoolean = false;
                             GOTO(210);
                         }
                     } else {
                         wArray[r][s + 1] = c;
                         c++;
-                        if (isClosedBottomRight(matrice[r][s])) {
-                            matrice[r][s] = 1;
+                        if (isClosedBottomRight(mazeCell[r][s])) {
+                            mazeCell[r][s] = 1;
                         } else {
-                            matrice[r][s] = 3;
+                            mazeCell[r][s] = 3;
                         }
                         s++;
-                        if (c == vertical * horizontal + 1)
+                        if (c == rowCount * colCount + 1)
                             GOTO(1200);
                         else
                             GOTO(270);
@@ -280,7 +280,7 @@ public class Amazing {
             }
 
         }
-        display(horizontal, vertical, matrice);
+        display(colCount, rowCount, mazeCell);
 
 
     }
@@ -308,13 +308,13 @@ public class Amazing {
         println();
     }
 
-    private static void display(int horizontal, int vertical, int[][] vArray) {
+    private static void display(int colCount, int rowCount, int[][] maze) {
 
-        for (int j = 1; j <= vertical; j++) {
+        for (int j = 1; j <= rowCount; j++) {
             print("I");
 
-            for (int i = 1; i <= horizontal; i++) {
-                if (vArray[i][j] >= 2)
+            for (int i = 1; i <= colCount; i++) {
+                if (maze[i][j] >= 2)
                     print("   ");
                 else
                     print("  I");
@@ -323,8 +323,8 @@ public class Amazing {
             print(" ");
             println();
 
-            for (int i = 1; i <= horizontal; i++) {
-                if (isClosedBottomRight(vArray[i][j]) || isClosedBottom(vArray[i][j]))
+            for (int i = 1; i <= colCount; i++) {
+                if (isClosedBottomRight(maze[i][j]) || isClosedBottom(maze[i][j]))
                     print(":--");
                 else
                     print(":  ");
@@ -334,6 +334,8 @@ public class Amazing {
             println();
         }
     }
+
+
 
     private static boolean isClosedBottom(int i) {
         return i == 2;
