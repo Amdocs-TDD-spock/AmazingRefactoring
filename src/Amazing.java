@@ -84,19 +84,45 @@ public class Amazing {
                         GOTO(270);
                     continue;
                 case 270:
-                    if (r - 1 == 0)
+                    if (r - 1 == 0 || wArray[r - 1][s] != 0)
                         GOTO(600);
-                    else if (wArray[r - 1][s] != 0)
-                        GOTO(600);
-                    else if (s - 1 == 0)
-                        GOTO(430);
-                    else if (wArray[r][s - 1] != 0)
-                        GOTO(430);
-                    else if (r == horizontal)
-                        GOTO(350);
-                    else if (wArray[r + 1][s] != 0)
-                        GOTO(350);
-                    else {
+                    else if (s - 1 == 0 || wArray[r][s - 1] != 0) {
+                        if (r == horizontal || wArray[r + 1][s] != 0) {
+                            if (s != vertical) {
+                                if (wArray[r][s + 1] != 0)
+                                    GOTO(940);
+                                else
+                                    GOTO(570);
+                            } else if (z == 1)
+                                GOTO(940);
+                            else {
+                                q = 1;
+                                GOTO(570);
+                            }
+                        } else if (s != vertical) {
+                            if (wArray[r][s + 1] != 0)
+                                GOTO(510);
+                            else
+                                GOTO(490);
+                        } else if (z == 1)
+                            GOTO(510);
+                        else {
+                            q = 1;
+                            GOTO(490);
+                        }
+                    } else if (r == horizontal || wArray[r + 1][s] != 0) {
+                        if (s != vertical) {
+                            if (wArray[r][s + 1] != 0)
+                                GOTO(410);
+                            else
+                                GOTO(390);
+                        } else if (z == 1)
+                            GOTO(410);
+                        else {
+                            q = 1;
+                            GOTO(390);
+                        }
+                    } else {
                         x = rnd(3);
                         if (x == 1)
                             GOTO(940);
@@ -104,19 +130,6 @@ public class Amazing {
                             GOTO(980);
                         else
                             GOTO(1020);
-                    }
-                    continue;
-                case 350:
-                    if (s != vertical) {
-                        if (wArray[r][s + 1] != 0)
-                            GOTO(410);
-                        else
-                            GOTO(390);
-                    } else if (z == 1)
-                        GOTO(410);
-                    else {
-                        q = 1;
-                        GOTO(390);
                     }
                     continue;
                 case 390:
@@ -135,24 +148,6 @@ public class Amazing {
                     else
                         GOTO(980);
                     continue;
-                case 430:
-                    if (r == horizontal)
-                        GOTO(530);
-                    else if (wArray[r + 1][s] != 0)
-                        GOTO(530);
-                    else if (s != vertical) {
-                        if (wArray[r][s + 1] != 0)
-                            GOTO(510);
-                        else
-                            GOTO(490);
-                    } else if (z == 1)
-                        GOTO(510);
-                    else {
-                        q = 1;
-                        GOTO(490);
-                    }
-                    continue;
-
                 case 490:
                     x = rnd(3);
                     if (x == 1)
@@ -169,22 +164,7 @@ public class Amazing {
                     else
                         GOTO(1020);
                     continue;
-                case 530:
-                    if (s != vertical)
-                        GOTO(560);
-                    else if (z == 1)
-                        GOTO(940);
-                    else {
-                        q = 1;
-                        GOTO(570);
-                    }
-                    continue;
-                case 560:
-                    if (wArray[r][s + 1] != 0)
-                        GOTO(940);
-                    else
-                        GOTO(570);
-                    continue;
+
                 case 570:
                     x = rnd(2);
                     if (x == 1)
@@ -193,28 +173,63 @@ public class Amazing {
                         GOTO(1090);
                     continue;
                 case 600:
-                    if (s - 1 == 0)
-                        GOTO(790);
-                    else if (wArray[r][s - 1] != 0)
-                        GOTO(790);
-                    else if (r == horizontal)
-                        GOTO(720);
-                    else if (wArray[r + 1][s] != 0)
-                        GOTO(720);
-                    else if (s != vertical)
-                        GOTO(670);
-                    else if (z == 1)
+                    if (s - 1 == 0 || wArray[r][s - 1] != 0) {
+                        if (r == horizontal)
+                            GOTO(880);
+                        else {
+                            if (wArray[r + 1][s] != 0)
+                                GOTO(880);
+                            else {
+                                if (s != vertical) {
+                                    if (wArray[r][s + 1] != 0)
+                                        GOTO(1020);
+                                    else {
+                                        x = rnd(2); //x=1 or 2
+                                        if (x == 1)
+                                            GOTO(1020);
+                                        else
+                                            GOTO(1090);
+                                    }
+                                } else if (z == 1)
+                                    GOTO(1020);
+                                else {
+                                    q = 1;
+                                    GOTO(990);
+                                }
+                            }
+                        }
+                    } else if (r == horizontal || wArray[r + 1][s] != 0) {
+                        if (s != vertical) {
+                            if (wArray[r][s + 1] != 0)
+                                GOTO(980);
+                            else {
+                                x = rnd(2);
+                                if (x == 1)
+                                    GOTO(980);
+                                else
+                                    GOTO(1090);
+                            }
+                        } else if (z == 1)
+                            GOTO(980);
+                        else {
+                            q = 1;
+                            x = rnd(2);
+                            if (x == 1)
+                                GOTO(980);
+                            else
+                                GOTO(1090);
+                        }
+                    } else if (s != vertical) {
+                        if (wArray[r][s + 1] != 0)
+                            GOTO(700);
+                        else
+                            GOTO(680);
+                    } else if (z == 1)
                         GOTO(700);
                     else {
                         q = 1;
                         GOTO(680);
                     }
-                    continue;
-                case 670:
-                    if (wArray[r][s + 1] != 0)
-                        GOTO(700);
-                    else
-                        GOTO(680);
                     continue;
                 case 680:
                     x = rnd(3);
@@ -231,57 +246,6 @@ public class Amazing {
                         GOTO(980);
                     else
                         GOTO(1020);
-                    continue;
-                case 720:
-                    if (s != vertical) {
-                        if (wArray[r][s + 1] != 0)
-                            GOTO(980);
-                        else {
-                            x = rnd(2);
-                            if (x == 1)
-                                GOTO(980);
-                            else
-                                GOTO(1090);
-                        }
-                    } else if (z == 1)
-                        GOTO(980);
-                    else {
-                        q = 1;
-                        x = rnd(2);
-                        if (x == 1)
-                            GOTO(980);
-                        else
-                            GOTO(1090);
-                    }
-                    continue;
-                case 790:
-                    if (r == horizontal)
-                        GOTO(880);
-                    else {
-                        if (wArray[r + 1][s] != 0)
-                            GOTO(880);
-                        else {
-                            if (s != vertical)
-                                GOTO(840);
-                            else if (z == 1)
-                                GOTO(1020);
-                            else {
-                                q = 1;
-                                GOTO(990);
-                            }
-                        }
-                    }
-                    continue;
-                case 840:
-                    if (wArray[r][s + 1] != 0)
-                        GOTO(1020);
-                    else {
-                        x = rnd(2); //x=1 or 2
-                        if (x == 1)
-                            GOTO(1020);
-                        else
-                            GOTO(1090);
-                    }
                     continue;
                 case 880:
                     if (s != vertical) {
