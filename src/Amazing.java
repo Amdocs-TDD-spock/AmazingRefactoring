@@ -102,10 +102,8 @@ public class Amazing {
                             GOTO(940);
                         else if (x == 2)
                             GOTO(980);
-                        else if (x == 3)
-                            GOTO(1020);
                         else
-                            GOTO(350);
+                            GOTO(1020);
                     }
                     continue;
                 case 350:
@@ -127,19 +125,15 @@ public class Amazing {
                         GOTO(940);
                     else if (x == 2)
                         GOTO(980);
-                    else if (x == 3)
-                        GOTO(1090);
                     else
-                        GOTO(410);
+                        GOTO(1090);
                     continue;
                 case 410:
                     x = rnd(2);
                     if (x == 1)
                         GOTO(940);
-                    else if (x == 2)
-                        GOTO(980);
                     else
-                        GOTO(430);
+                        GOTO(980);
                     continue;
                 case 430:
                     if (r == horizontal)
@@ -165,19 +159,15 @@ public class Amazing {
                         GOTO(940);
                     else if (x == 2)
                         GOTO(1020);
-                    else if (x == 3)
-                        GOTO(1090);
                     else
-                        GOTO(510);
+                        GOTO(1090);
                     continue;
                 case 510:
                     x = rnd(2);
                     if (x == 1)
                         GOTO(940);
-                    else if (x == 2)
-                        GOTO(1020);
                     else
-                        GOTO(530);
+                        GOTO(1020);
                     continue;
                 case 530:
                     if (s != vertical)
@@ -199,10 +189,8 @@ public class Amazing {
                     x = rnd(2);
                     if (x == 1)
                         GOTO(940);
-                    else if (x == 2)
-                        GOTO(1090);
                     else
-                        GOTO(940);
+                        GOTO(1090);
                     continue;
                 case 600:
                     if (s - 1 == 0)
@@ -234,19 +222,15 @@ public class Amazing {
                         GOTO(980);
                     else if (x == 2)
                         GOTO(1020);
-                    else if (x == 3)
-                        GOTO(1090);
                     else
-                        GOTO(700);
+                        GOTO(1090);
                     continue;
                 case 700:
                     x = rnd(2);
                     if (x == 1)
                         GOTO(980);
-                    else if (x == 2)
-                        GOTO(1020);
                     else
-                        GOTO(720);
+                        GOTO(1020);
                     continue;
                 case 720:
                     if (s != vertical) {
@@ -256,10 +240,8 @@ public class Amazing {
                             x = rnd(2);
                             if (x == 1)
                                 GOTO(980);
-                            else if (x == 2)
-                                GOTO(1090);
                             else
-                                GOTO(980);
+                                GOTO(1090);
                         }
                     } else if (z == 1)
                         GOTO(980);
@@ -268,10 +250,8 @@ public class Amazing {
                         x = rnd(2);
                         if (x == 1)
                             GOTO(980);
-                        else if (x == 2)
-                            GOTO(1090);
                         else
-                            GOTO(980);
+                            GOTO(1090);
                     }
                     continue;
                 case 790:
