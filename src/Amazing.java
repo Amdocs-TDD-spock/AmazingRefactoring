@@ -64,6 +64,8 @@ public class Amazing {
         boolean evenMoreStrangeBoolean = false; //boolean we don't know much about
 
 
+        boolean updateWArray = true;
+
         // 190
         int c = 1;
         wArray[x][1] = c;
@@ -127,7 +129,6 @@ public class Amazing {
                                     if (x == 1)
                                         GOTO(940);
                                     else {
-                                        wArray[r][s - 1] = c;
                                         GOTO(990);
                                     }
                                 } else {
@@ -135,7 +136,6 @@ public class Amazing {
                                     if (x == 1)
                                         GOTO(940);
                                     else if (x == 2) {
-                                        wArray[r][s - 1] = c;
                                         GOTO(990);
                                     } else
                                         GOTO(1090);
@@ -145,7 +145,6 @@ public class Amazing {
                                 if (x == 1)
                                     GOTO(940);
                                 else {
-                                    wArray[r][s - 1] = c;
                                     GOTO(990);
                                 }
                             } else {
@@ -154,7 +153,6 @@ public class Amazing {
                                 if (x == 1)
                                     GOTO(940);
                                 else if (x == 2) {
-                                    wArray[r][s - 1] = c;
                                     GOTO(990);
                                 } else
                                     GOTO(1090);
@@ -164,7 +162,6 @@ public class Amazing {
                             if (x == 1)
                                 GOTO(940);
                             else if (x == 2) {
-                                wArray[r][s - 1] = c;
                                 GOTO(990);
                             } else
                                 GOTO(1020);
@@ -213,6 +210,7 @@ public class Amazing {
                                     GOTO(1020);
                                 else {
                                     strangeBoolean=true;
+                                    updateWArray=false;
                                     GOTO(990);
                                 }
                             }
@@ -220,24 +218,20 @@ public class Amazing {
                     } else if (r == horizontal || wArray[r + 1][s] != 0) {
                         if (s != vertical) {
                             if (wArray[r][s + 1] != 0) {
-                                wArray[r][s - 1] = c;
                                 GOTO(990);
                             } else {
                                 x = rnd(2);
                                 if (x == 1) {
-                                    wArray[r][s - 1] = c;
                                     GOTO(990);
                                 } else
                                     GOTO(1090);
                             }
                         } else if (evenMoreStrangeBoolean) {
-                            wArray[r][s - 1] = c;
                             GOTO(990);
                         } else {
                             strangeBoolean=true;
                             x = rnd(2);
                             if (x == 1) {
-                                wArray[r][s - 1] = c;
                                 GOTO(990);
                             } else
                                 GOTO(1090);
@@ -246,14 +240,12 @@ public class Amazing {
                         if (wArray[r][s + 1] != 0) {
                             x = rnd(2);
                             if (x == 1) {
-                                wArray[r][s - 1] = c;
                                 GOTO(990);
                             } else
                                 GOTO(1020);
                         } else {
                             x = rnd(3);
                             if (x == 1) {
-                                wArray[r][s - 1] = c;
                                 GOTO(990);
                             } else if (x == 2)
                                 GOTO(1020);
@@ -263,7 +255,6 @@ public class Amazing {
                     } else if (evenMoreStrangeBoolean) {
                         x = rnd(2);
                         if (x == 1) {
-                            wArray[r][s - 1] = c;
                             GOTO(990);
                         } else
                             GOTO(1020);
@@ -271,7 +262,6 @@ public class Amazing {
                         strangeBoolean=true;
                         x = rnd(3);
                         if (x == 1) {
-                            wArray[r][s - 1] = c;
                             GOTO(990);
                         } else if (x == 2)
                             GOTO(1020);
@@ -292,6 +282,13 @@ public class Amazing {
                     }
                     continue;
                 case 990:
+                    //'wArray[r][s - 1] = c;' is sytematically called before each GOTO(990) except 1 in the original version
+                    //'updateWArray' is introduced to keep the same behaviour even if tests still pass without it
+                    if (updateWArray) {
+
+                        wArray[r][s - 1] = c;
+                    }
+                    updateWArray=true;
                     c++;
                     matrice[r][s - 1] = 1;
                     s--;
