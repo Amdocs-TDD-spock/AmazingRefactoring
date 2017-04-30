@@ -199,7 +199,7 @@ public class Amazing {
                         goRandomlyTo(990, 1020, 1090);
                     }
                     continue;
-                case 940:
+                case 940://open left wall of current cell
                     wArray[currentCol - 1][currentRow] = c;
                     c++;
                     mazeCell[currentCol - 1][currentRow] = CellState.OPENED_RIGHT;
@@ -211,7 +211,7 @@ public class Amazing {
                         GOTO(270);
                     }
                     continue;
-                case 990:
+                case 990: // open top wall of current cell and move to the cell above
                     //'wArray[currentCol][currentRow - 1] = c;' is sytematically called before each GOTO(990) except 1 in the original version
                     //'updateWArray' is introduced to keep the same behaviour even if tests still pass without it
                     if (updateWArray) {
@@ -229,7 +229,7 @@ public class Amazing {
                         GOTO(270);
                     }
                     continue;
-                case 1020:
+                case 1020: // open right wall of current cell and move to cell on the right
                     wArray[currentCol + 1][currentRow] = c;
                     c++;
                     openRightOfCell(mazeCell,currentCol,currentRow);
@@ -239,12 +239,12 @@ public class Amazing {
                     else
                         GOTO(600);
                     continue;
-                case 1090:
+                case 1090: // open bottom wall of current cell
+                    openBottomOfCell(mazeCell,currentCol,currentRow);
                     if (strangeBoolean) {
                         evenMoreStrangeBoolean = true;
-                        openBottomOfCell(mazeCell,currentCol,currentRow);
+                        strangeBoolean = false;
                         if (mazeCell[currentCol][currentRow]==CellState.CLOSED_RIGHT_AND_BOTTOM) {
-                            strangeBoolean = false;
                             currentCol = 1;
                             currentRow = 1;
                             if (wArray[currentCol][currentRow] == 0)
@@ -252,13 +252,12 @@ public class Amazing {
                             else
                                 GOTO(270);
                         } else {
-                            strangeBoolean = false;
                             GOTO(210);
                         }
                     } else {
+                        // move to cell below
                         wArray[currentCol][currentRow + 1] = c;
                         c++;
-                        openBottomOfCell(mazeCell,currentCol,currentRow);
                         currentRow++;
                         if (isTheEnd(colCount, rowCount, c))
                             GOTO(1200);
