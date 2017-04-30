@@ -38,7 +38,7 @@ public class Amazing {
     }
 
     public static void goRandomlyTo(int... possibleWays) {
-        GOTO(possibleWays[rnd(possibleWays.length)-1]);
+        GOTO(possibleWays[rnd(possibleWays.length) - 1]);
     }
 
     public static void doit(int horizontal, int vertical) {
@@ -59,7 +59,7 @@ public class Amazing {
             matrice[i] = new int[vertical + 1];
         }
 
-        boolean strangeBoolean= false; //boolean we don't know much about
+        boolean strangeBoolean = false; //boolean we don't know much about
 
         boolean evenMoreStrangeBoolean = false; //boolean we don't know much about
 
@@ -101,48 +101,48 @@ public class Amazing {
                                 if (wArray[r][s + 1] != 0)
                                     GOTO(940);
                                 else {
-                                    goRandomlyTo(940,1090);
+                                    goRandomlyTo(940, 1090);
                                 }
                             } else if (evenMoreStrangeBoolean)
                                 GOTO(940);
                             else {
-                                strangeBoolean=true;
-                                goRandomlyTo(940,1090);
+                                strangeBoolean = true;
+                                goRandomlyTo(940, 1090);
                             }
                         } else if (s != vertical) {
                             if (wArray[r][s + 1] != 0) {
-                                goRandomlyTo(940,1020);
+                                goRandomlyTo(940, 1020);
                             } else {
-                                goRandomlyTo(940,1020,1090);
+                                goRandomlyTo(940, 1020, 1090);
                             }
                         } else if (evenMoreStrangeBoolean) {
-                            goRandomlyTo(940,1020);
+                            goRandomlyTo(940, 1020);
                         } else {
-                            strangeBoolean=true;
-                            goRandomlyTo(940,1020,1090);
+                            strangeBoolean = true;
+                            goRandomlyTo(940, 1020, 1090);
                         }
                     } else {
                         if (r == horizontal || wArray[r + 1][s] != 0) {
                             if (s != vertical) {
                                 if (wArray[r][s + 1] != 0) {
-                                    goRandomlyTo(940,990);
+                                    goRandomlyTo(940, 990);
                                 } else {
-                                    goRandomlyTo(940,990,1090);
+                                    goRandomlyTo(940, 990, 1090);
                                 }
                             } else if (evenMoreStrangeBoolean) {
-                                goRandomlyTo(940,990);
+                                goRandomlyTo(940, 990);
                             } else {
-                                strangeBoolean=true;
-                                goRandomlyTo(940,990,1090);
+                                strangeBoolean = true;
+                                goRandomlyTo(940, 990, 1090);
                             }
                         } else {
-                            goRandomlyTo(940,990,1020);
+                            goRandomlyTo(940, 990, 1020);
                         }
                     }
                     continue;
                 case 600:
                     if (s - 1 == 0 || wArray[r][s - 1] != 0) {
-                        if (r == horizontal) {
+                        if (r == horizontal || wArray[r + 1][s] != 0) {
                             if (s != vertical) {
                                 if (wArray[r][s + 1] != 0)
                                     GOTO(210);
@@ -152,65 +152,47 @@ public class Amazing {
                                 if (evenMoreStrangeBoolean)
                                     GOTO(210);
                                 else {
-                                    strangeBoolean=true;
+                                    strangeBoolean = true;
                                     GOTO(1090);
                                 }
                             }
-                        } else {
-                            if (wArray[r + 1][s] != 0) {
-                                if (s != vertical) {
-                                    if (wArray[r][s + 1] != 0)
-                                        GOTO(210);
-                                    else
-                                        GOTO(1090);
-                                } else {
-                                    if (evenMoreStrangeBoolean)
-                                        GOTO(210);
-                                    else {
-                                        strangeBoolean=true;
-                                        GOTO(1090);
-                                    }
-                                }
-                            } else {
-                                if (s != vertical) {
-                                    if (wArray[r][s + 1] != 0)
-                                        GOTO(1020);
-                                    else {
-                                        goRandomlyTo(1020,1090);
-                                    }
-                                } else if (evenMoreStrangeBoolean)
-                                    GOTO(1020);
-                                else {
-                                    strangeBoolean=true;
-                                    updateWArray=false;
-                                    GOTO(990);
-                                }
+                        } else if (s != vertical) {
+                            if (wArray[r][s + 1] != 0)
+                                GOTO(1020);
+                            else {
+                                goRandomlyTo(1020, 1090);
                             }
+                        } else if (evenMoreStrangeBoolean)
+                            GOTO(1020);
+                        else {
+                            strangeBoolean = true;
+                            updateWArray = false;
+                            GOTO(990);
                         }
                     } else if (r == horizontal || wArray[r + 1][s] != 0) {
                         if (s != vertical) {
                             if (wArray[r][s + 1] != 0) {
                                 GOTO(990);
                             } else {
-                                goRandomlyTo(990,1090);
+                                goRandomlyTo(990, 1090);
                             }
                         } else if (evenMoreStrangeBoolean) {
                             GOTO(990);
                         } else {
-                            strangeBoolean=true;
-                            goRandomlyTo(990,1090);
+                            strangeBoolean = true;
+                            goRandomlyTo(990, 1090);
                         }
                     } else if (s != vertical) {
                         if (wArray[r][s + 1] != 0) {
-                            goRandomlyTo(990,1020);
+                            goRandomlyTo(990, 1020);
                         } else {
-                            goRandomlyTo(990,1020,1090);
+                            goRandomlyTo(990, 1020, 1090);
                         }
                     } else if (evenMoreStrangeBoolean) {
-                        goRandomlyTo(990,1020);
+                        goRandomlyTo(990, 1020);
                     } else {
-                        strangeBoolean=true;
-                        goRandomlyTo(990,1020,1090);
+                        strangeBoolean = true;
+                        goRandomlyTo(990, 1020, 1090);
                     }
                     continue;
                 case 940:
@@ -221,7 +203,7 @@ public class Amazing {
                     if (c == horizontal * vertical + 1)
                         GOTO(1200);
                     else {
-                        strangeBoolean=false;
+                        strangeBoolean = false;
                         GOTO(270);
                     }
                     continue;
@@ -232,14 +214,14 @@ public class Amazing {
 
                         wArray[r][s - 1] = c;
                     }
-                    updateWArray=true;
+                    updateWArray = true;
                     c++;
                     matrice[r][s - 1] = 1;
                     s--;
                     if (c == horizontal * vertical + 1)
                         GOTO(1200);
                     else {
-                        strangeBoolean=false;
+                        strangeBoolean = false;
                         GOTO(270);
                     }
                     continue;
@@ -261,10 +243,10 @@ public class Amazing {
                     continue;
                 case 1090:
                     if (strangeBoolean) {
-                        evenMoreStrangeBoolean=true;
+                        evenMoreStrangeBoolean = true;
                         if (isClosedBottomRight(matrice[r][s])) {
                             matrice[r][s] = 1;
-                            strangeBoolean=false;
+                            strangeBoolean = false;
                             r = 1;
                             s = 1;
                             if (wArray[r][s] == 0)
@@ -273,7 +255,7 @@ public class Amazing {
                                 GOTO(270);
                         } else {
                             matrice[r][s] = 3;
-                            strangeBoolean=false;
+                            strangeBoolean = false;
                             GOTO(210);
                         }
                     } else {
