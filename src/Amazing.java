@@ -125,46 +125,18 @@ public class Amazing {
                         if (r == horizontal || wArray[r + 1][s] != 0) {
                             if (s != vertical) {
                                 if (wArray[r][s + 1] != 0) {
-                                    x = rnd(2);
-                                    if (x == 1)
-                                        GOTO(940);
-                                    else {
-                                        GOTO(990);
-                                    }
+                                    goRandomlyTo(940,990);
                                 } else {
-                                    x = rnd(3);
-                                    if (x == 1)
-                                        GOTO(940);
-                                    else if (x == 2) {
-                                        GOTO(990);
-                                    } else
-                                        GOTO(1090);
+                                    goRandomlyTo(940,990,1090);
                                 }
                             } else if (evenMoreStrangeBoolean) {
-                                x = rnd(2);
-                                if (x == 1)
-                                    GOTO(940);
-                                else {
-                                    GOTO(990);
-                                }
+                                goRandomlyTo(940,990);
                             } else {
                                 strangeBoolean=true;
-                                x = rnd(3);
-                                if (x == 1)
-                                    GOTO(940);
-                                else if (x == 2) {
-                                    GOTO(990);
-                                } else
-                                    GOTO(1090);
+                                goRandomlyTo(940,990,1090);
                             }
                         } else {
-                            x = rnd(3);
-                            if (x == 1)
-                                GOTO(940);
-                            else if (x == 2) {
-                                GOTO(990);
-                            } else
-                                GOTO(1020);
+                            goRandomlyTo(940,990,1020);
                         }
                     }
                     continue;
@@ -220,53 +192,25 @@ public class Amazing {
                             if (wArray[r][s + 1] != 0) {
                                 GOTO(990);
                             } else {
-                                x = rnd(2);
-                                if (x == 1) {
-                                    GOTO(990);
-                                } else
-                                    GOTO(1090);
+                                goRandomlyTo(990,1090);
                             }
                         } else if (evenMoreStrangeBoolean) {
                             GOTO(990);
                         } else {
                             strangeBoolean=true;
-                            x = rnd(2);
-                            if (x == 1) {
-                                GOTO(990);
-                            } else
-                                GOTO(1090);
+                            goRandomlyTo(990,1090);
                         }
                     } else if (s != vertical) {
                         if (wArray[r][s + 1] != 0) {
-                            x = rnd(2);
-                            if (x == 1) {
-                                GOTO(990);
-                            } else
-                                GOTO(1020);
+                            goRandomlyTo(990,1020);
                         } else {
-                            x = rnd(3);
-                            if (x == 1) {
-                                GOTO(990);
-                            } else if (x == 2)
-                                GOTO(1020);
-                            else
-                                GOTO(1090);
+                            goRandomlyTo(990,1020,1090);
                         }
                     } else if (evenMoreStrangeBoolean) {
-                        x = rnd(2);
-                        if (x == 1) {
-                            GOTO(990);
-                        } else
-                            GOTO(1020);
+                        goRandomlyTo(990,1020);
                     } else {
                         strangeBoolean=true;
-                        x = rnd(3);
-                        if (x == 1) {
-                            GOTO(990);
-                        } else if (x == 2)
-                            GOTO(1020);
-                        else
-                            GOTO(1090);
+                        goRandomlyTo(990,1020,1090);
                     }
                     continue;
                 case 940:
