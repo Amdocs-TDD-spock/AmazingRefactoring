@@ -15,7 +15,6 @@ public class Amazing {
     public static final int TOP_WALL = 990;
     public static final int RIGHT_WALL = 1020;
     public static final int BOTTOM_WALL = 1090;
-    private static final int FERME_EN_BAS_A_DROITE = 0;
     public static Random random = new Random(0);
     static int target = 0;      // where GOTO goes
     static StringBuffer result = new StringBuffer();
@@ -45,10 +44,6 @@ public class Amazing {
 
     public static void GOTO(int lineno) {
         target = lineno;
-    }
-
-    public static void OPEN(int lineno) {
-        GOTO(lineno);
     }
 
     public static void openRandomWallOfCurrentCell(int... possibleWays) {
@@ -224,7 +219,6 @@ public class Amazing {
                     //'cellWasProcessed[currentCol][currentRow - 1] = c;' is sytematically called before each GOTO(990) except 1 in the original version
                     //'updateWArray' is introduced to keep the same behaviour even if tests still pass without it
                     if (updateWArray) {
-
                         cellWasProcessed[currentCol][currentRow - 1] = true;
                     }
                     updateWArray = true;
